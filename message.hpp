@@ -9,6 +9,7 @@
 
 const int MSGBODY_STRING = 700;
 const int MSGBODY_INT = 701;
+const int MSGBODY_JSON = 702;
 
 enum MessageTypes {
 	DEFAULT_MSG = 0,
@@ -17,7 +18,8 @@ enum MessageTypes {
 	CLIENT_TEXT_MESSAGE = 402,
 	SERVER_MESSAGE = 403,
 	ERRORMSG = 404,
-	DISCONNECT = 405
+	DISCONNECT = 405,
+	CLIENT_COMMAND = 406
 };
 
 static const std::map<std::string, const int> MESSAGE_TYPES = {
@@ -26,7 +28,8 @@ static const std::map<std::string, const int> MESSAGE_TYPES = {
 	{"client_textmsg", CLIENT_TEXT_MESSAGE},
 	{"server_message", SERVER_MESSAGE},
 	{"error", ERRORMSG},
-	{"disconnect", DISCONNECT}
+	{"disconnect", DISCONNECT},
+	{"client_command", CLIENT_COMMAND}
 };
 
 
@@ -40,6 +43,7 @@ private:
 
 	std::string body_s;
 	std::int32_t body_i;
+	nlohmann::json body_json;
 
 public:
 	std::pair<std::string, int> serialize_header();
@@ -57,9 +61,11 @@ public:
 	void set_sender(std::string sender);
 	void set_body_string(std::string str);
 	void set_body_int(int integ);
+	void set_body_json(nlohmann::json json);
 
 	std::string get_body_str();
 	int get_body_int();
+	nlohmann::json get_body_json();
 
 	void print_message();
 };

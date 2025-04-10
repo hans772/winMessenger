@@ -1,12 +1,9 @@
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
-#include "server.hpp"
-#include <iostream>
 #include <WinSock2.h>
-#include <WS2tcpip.h>
-#include <thread>
 #include <vector>
+#include "rooms.hpp"
 
 class Server
 {
@@ -28,7 +25,7 @@ public:
 
 	int listen_and_accept(int max_connections);
 private:
-	std::vector<SOCKET> _connected_clients;
+	std::vector<std::shared_ptr<ChatRoom>> chat_rooms;
 	int _client_thread(SOCKET client_socket, std::vector<SOCKET>& connected_clients);
 };
 #endif

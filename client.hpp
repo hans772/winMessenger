@@ -1,12 +1,9 @@
 #ifndef CLIENT_HPP
 #define CLIENT_HPP
 
-#include "server.hpp"
-#include <iostream>
 #include <WinSock2.h>
-#include <WS2tcpip.h>
-#include <thread>
 #include <vector>
+#include <string>
 
 class Client
 {

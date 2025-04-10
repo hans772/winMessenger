@@ -73,6 +73,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -89,6 +97,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -417,6 +433,20 @@
             "Transitive" = "11:FALSE"
             "Target" = "8:_DDE76AA55D0345A18A69464BC32A9943"
             "Folder" = "8:_9EDDDAD77DB14B0E9D10B626DB1C1873"
+            "WorkingFolder" = "8:_61821D401F2547298DA77EE60C31DA17"
+            "Icon" = "8:_78F22E5794D34C7F8F0636B17911F8D4"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_891B67EE6BE349DB9ED591F0FFA13B67"
+            {
+            "Name" = "8:WinMessenger"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_DDE76AA55D0345A18A69464BC32A9943"
+            "Folder" = "8:_CF2DCD364BE04CE39B66BEDB59E28836"
             "WorkingFolder" = "8:_61821D401F2547298DA77EE60C31DA17"
             "Icon" = "8:_78F22E5794D34C7F8F0636B17911F8D4"
             "Feature" = "8:"

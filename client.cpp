@@ -1,6 +1,8 @@
 #include "client.hpp"
+#include "json.hpp"
 #include "message.hpp"
 #include <iostream>
+#include <sstream>
 #include <WinSock2.h>
 #include <WS2tcpip.h>
 #include <thread>
@@ -95,11 +97,17 @@ int ThreadedClient::start_chat() {
     std::cout << "Enter your name: ";
     cin >> name;
 
-    std::cout << "-----------------------------------------------------" << endl;
+    string room;
+    std::cout << "Enter the Room you wish to join: ";
+    cin >> room;
+
+    std::cout << "-------------------------" << room << "-------------------------- - " << endl;
     // creating a join message to send to server as initial message
 
     Message msg = Message(CLIENT_JOIN);
     msg.set_body_string(name);
+    msg.send_message(_connect_socket);
+    msg.set_body_string(room);
     msg.send_message(_connect_socket);
 
     // creating a write thread, one can also create a listen_thread if they intend on doing other things on the main thread
@@ -200,12 +208,44 @@ int ThreadedClient::_write_thread(SOCKET server) {
         // handling return key
         if (ch == '\r') {
             if (!input.length()) continue;
-            // if input is exit, disconnect
-            if (input == "exit") {
+
+            if (input[0] == '/') {
+                Message cmd = Message(CLIENT_COMMAND);
+                input.erase(input.begin());
+                stringstream arguments(input);
+                std::string command;
+                arguments >> command;
+
+                if (command == "exit") {
+                    lock_guard<std::mutex> lock(console_mutex);
+                    _clear_console_line();
+                    input.clear();
+                    std::cout << '\n';
+                    break;
+                }
+
+                std::vector<std::string> argument_vec;
+                std::string arg;
+                while (arguments >> arg) {
+                    argument_vec.push_back(arg);
+                }
+
+                nlohmann::json body_json;
+                body_json["command"] = command;
+                body_json["arg_num"] = (int)argument_vec.size();
+                body_json["arguments"] = argument_vec;
+
+                cmd.set_body_json(body_json);
+
+                cmd.send_message(server);
+
+
                 lock_guard<std::mutex> lock(console_mutex);
-                _clear_console_line();
-                std::cout << '\n';
-                break;
+                std::cout << "\n> ";
+                input.clear();
+                std::cout.flush();
+                continue;
+                
             }
 
             // else send message through socket
@@ -232,7 +272,7 @@ int ThreadedClient::_write_thread(SOCKET server) {
     // ending connection, and requesting server to send DISCONNECT message.
 
     std::cout << "Ending connection." << endl;
-    cout.flush();
+    std::cout.flush();
     Message msg = Message(CLIENT_LEAVE);
     msg.set_body_string(" ");
     msg.send_message(server);

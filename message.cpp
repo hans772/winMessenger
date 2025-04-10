@@ -6,7 +6,6 @@
 #include <cstring>
 
 #include "message.hpp"
-#include "json.hpp"
 
 using namespace std;
 using nlohmann::json;
@@ -48,6 +47,7 @@ int Message::get_type() { return headerjson["message_type"].get<int>(); }
 
 string Message::get_body_str() { return body_s; }
 int Message::get_body_int() { return ntohl(body_i); }
+nlohmann::json Message::get_body_json() { return body_json; }
 
 void Message::set_type(int type) { headerjson["message_type"] = type; }
 void Message::set_sender(string sender) { headerjson["sender"] = sender; }
@@ -63,6 +63,13 @@ void Message::set_body_int(int integ){
 
 	headerjson["body_length"] = sizeof(int32_t);
 	headerjson["body_type"] = MSGBODY_INT;
+}
+
+void Message::set_body_json(json json) {
+	body_json = json;
+
+	headerjson["body_length"] = body_json.dump().length();
+	headerjson["body_type"] = MSGBODY_JSON;
 }
 
 // Using JSON serialization for serializing and deserializing headers
@@ -183,12 +190,21 @@ Message Message::recieve_message(SOCKET socket) {
 		break;
 	}
 	case MSGBODY_INT:
+	{
 		int32_t body_i;
 		memcpy(&body_i, bodybuf, sizeof(int32_t));
 		return_msg.set_body_int(body_i);
 		break;
 	}
-
+	case MSGBODY_JSON:
+	{
+		string body_s;
+		body_s.assign(bodybuf, bodybuf + header["body_length"].get<int>());
+		json body_js = json::parse(body_s);
+		return_msg.set_body_json(body_js);
+		break;
+	}
+	}
 	return_msg.set_sender(header["sender"].get<string>());
 	
 	delete[] bodybuf;
@@ -274,6 +290,10 @@ int Message::send_message(SOCKET socket) {
 	case MSGBODY_INT:
 		bodybuf = new char[sizeof(int32_t)];
 		memcpy(bodybuf, &body_i, sizeof(int32_t));
+		break;
+	case MSGBODY_JSON:
+		bodybuf = new char[headerjson["body_length"].get<int>() + 1];
+		memcpy(bodybuf, body_json.dump().c_str(), headerjson["body_length"].get<int>() + 1);
 		break;
 	default:
 		cout << "Unknown body type" << endl;

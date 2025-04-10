@@ -21,13 +21,22 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="message.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="server.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rooms.hpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rooms.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="server_client.hpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="server_client.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
