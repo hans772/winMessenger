@@ -98,7 +98,7 @@ int ThreadedClient::start_chat() {
     cin >> name;
 
     string room;
-    std::cout << "Enter the Room you wish to join: ";
+    std::cout << "Enter the room you wish to join: ";
     cin >> room;
 
     std::cout << "-------------------------" << room << "-------------------------- - " << endl;
@@ -153,6 +153,18 @@ int ThreadedClient::_listen_thread(SOCKET server) {
         case CLIENT_JOIN:
             std::cout << recieved.get_body_str() << " has joined the chat" << '\n';
             break;
+        case CLIENT_JOIN_ROOM:
+            std::cout << recieved.get_body_str() << " has joined the room." << '\n';
+            break;
+        case CLIENT_LEAVE_ROOM: {
+            nlohmann::json data = recieved.get_body_json();
+            std::cout
+                << data["client"].get<std::string>()
+                << " has left the room to room: "
+                << data["room_name"].get<std::string>()
+                << '\n';
+            break;
+        }
         case ERRORMSG:
             // on account of an error, the socket will be closed automatically.
             std::cout << "Encountered an error with code: " << recieved.get_body_int() << endl;
@@ -174,7 +186,7 @@ int ThreadedClient::_listen_thread(SOCKET server) {
 }
 
 void ThreadedClient::_clear_console_line() {
-    std::cout << "\r\033[K";
+    std::cout << "\r\033[K"; //this might not work on all systems.
 }
 
 void ThreadedClient::_restore_client_input() {

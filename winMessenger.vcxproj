@@ -142,6 +142,11 @@
     <ClCompile Include="rooms.hpp" />
     <ClCompile Include="server_client.hpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="clientselect.txt" />
+    <Text Include="menufmt.txt" />
+    <Text Include="serverselect.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

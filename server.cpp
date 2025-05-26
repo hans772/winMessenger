@@ -79,7 +79,7 @@ int Server::create_tcp_socket(const char *port) {
             continue;
         }
 
-        cout << "Listening on port: " << port << endl;
+        cout << "Created a server on port: " << port << endl;
         break;
     }
     // memory management

@@ -54,4 +54,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="clientselect.txt" />
+    <Text Include="menufmt.txt" />
+    <Text Include="serverselect.txt" />
+  </ItemGroup>
 </Project>

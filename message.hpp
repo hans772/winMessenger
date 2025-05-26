@@ -19,7 +19,9 @@ enum MessageTypes {
 	SERVER_MESSAGE = 403,
 	ERRORMSG = 404,
 	DISCONNECT = 405,
-	CLIENT_COMMAND = 406
+	CLIENT_COMMAND = 406,
+	CLIENT_JOIN_ROOM = 407,
+	CLIENT_LEAVE_ROOM = 408
 };
 
 static const std::map<std::string, const int> MESSAGE_TYPES = {

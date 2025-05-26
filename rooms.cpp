@@ -20,6 +20,24 @@ void ChatRoom::remove_member(SOCKET member) {
 	members.erase(member);
 }
 
+std::shared_ptr <SubRoom> ChatRoom::move_member_to_subroom(std::string room_name, SOCKET member) {
+
+	for (std::shared_ptr <SubRoom> room : sub_rooms) {
+		if (room->name == room_name) {
+			remove_member(member);
+			room->add_member(member);
+
+			return room;
+		}
+	}
+
+	std::shared_ptr<SubRoom> new_room = std::make_shared<SubRoom>(this, room_name);
+	remove_member(member);
+	new_room->add_member(member);
+	sub_rooms.push_back(new_room);
+	return new_room;
+}
+
 SubRoom::SubRoom(ChatRoom* parent_room, const std::string& name) : ChatRoom(name), parent(parent_room) {};
 
 SubRoom::SubRoom(const SubRoom& other) : ChatRoom(other), parent(other.parent) {};

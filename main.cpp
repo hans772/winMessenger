@@ -1,6 +1,11 @@
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <conio.h>
+#include <map>
 #include <WinSock2.h>
 #include <WS2tcpip.h>
+#include <Windows.h>
 #include <thread>
 #include "client.hpp"
 #include "server.hpp"
@@ -19,14 +24,90 @@ using namespace std;
     However, this will work perfectly fine across computers inside the LAN, or with localhost (working computer)
 */
 
+
+std::string get_option(std::string menu, std::pair<std::string, std::vector<std::string>> option) {
+    int selected = 0;
+
+    while (1) {
+        system("cls");
+        std::cout << menu;
+        std::cout << option.first << ":\n";
+        for (int i = 0; i < option.second.size(); i++) {
+            std::cout << option.second[i];
+            if (i == selected) std::cout << "  <<<\n";
+            else std::cout << '\n';
+        }
+
+        int ch = getch();
+        if (ch == 72 || ch == 80) {
+            if (ch == 72) selected = ((--selected)%option.second.size()); // Up
+            else selected = ((++selected)%option.second.size()) ; // Down
+        }
+        else if (ch == 13) { // Enter
+            if (*(option.second[selected].end() - 1) == '*') {
+                std::string value;
+                std::cout << "Enter value: ";
+                std::cin >> value;
+
+                return value;
+            }
+            return option.second[selected];
+        }
+    }
+}
+
+static void modify_menu(std::ifstream &menufmt, std::string &MENU, std::map<std::string, std::string>&selectedoptions) {
+    std::string temp;
+    while (std::getline(menufmt, temp)) {
+        for (int i = 0; i < temp.length(); i++) {
+            if (temp[i] == '$') {
+                std::pair<std::string, std::vector<std::string>> curopt;
+                int opts;
+                std::stringstream option(std::string(temp.begin() + i + 3, temp.end()));
+                option >> opts;
+                option.ignore(3);
+                option >> curopt.first;
+
+                while (opts--) {
+                    std::string subopt;
+                    std::getline(menufmt, subopt);
+                    
+                    curopt.second.push_back(subopt);
+                }
+                std::string chosen = get_option(MENU, curopt);
+
+                size_t firstNonSpace = chosen.find_first_not_of(" ");
+                size_t lastNonSpace = chosen.find_last_not_of(" ");
+
+                if (firstNonSpace != std::string::npos && lastNonSpace != std::string::npos) {
+                    chosen = chosen.substr(firstNonSpace, lastNonSpace - firstNonSpace + 1);
+                }
+
+                selectedoptions[curopt.first] = chosen;
+                MENU += curopt.first + " : " + selectedoptions[curopt.first] + '\n';
+                system("cls");
+                break;
+            }
+            MENU += temp[i];
+        }
+        MENU += '\n';
+    }
+}
+
 int main()
 {
+    std::ifstream menufmt("./menufmt.txt");
+    std::string MENU;
+    std::map<std::string, std::string> selectedoptions;
+    
+    modify_menu(menufmt, std::ref(MENU), std::ref(selectedoptions));
 
-    // Get choice to start server/client from user;
+    menufmt.close();
+    menufmt.clear();
+    menufmt.open("./" + selectedoptions["START"] + "select.txt");
 
-    int choice;
-    cout << "Start server(0)/client(1)?: ";
-    cin >> choice;
+    if (menufmt.is_open()) modify_menu(menufmt, std::ref(MENU), std::ref(selectedoptions));
+    else throw("Error Encountered");
 
     // Initialize WinSock.
 
@@ -41,36 +122,22 @@ int main()
     // client requires both server_ip (defaulted to localhost) and port
 
     string port;
-    if (!choice) {
-
-        int conns;
+    if (selectedoptions["START"] == "server") {
 
         ThreadedServer server = ThreadedServer();
-        cout << "Enter PORT <leave 0 for default port (56001)>: ";
-        cin >> port;
-        cout << "Enter max accepted clients <greater than 0>: ";
-        cin >> conns;
 
         // Initializes server and starts listening for incoming connections.
 
-        if (port == "0") port = DEFAULT_PORT;
-        if (server.create_tcp_socket(port.c_str())) {
-            server.listen_and_accept(conns);
+        if (server.create_tcp_socket(selectedoptions["PORT"].c_str())) {
+            server.listen_and_accept(std::stoi(selectedoptions["CLIENTS"]));
         }
     }
     else {
         ThreadedClient client = ThreadedClient();
-        string ip;
-        cout << "Enter IP <localhost/127.0.0.1/leave 0 for working computer>: ";
-        cin >> ip;
-        if (ip == "0") ip = "localhost";
-        cout << "Enter PORT <leave 0 for default port (56001)>: ";
-        cin >> port;
-        if (port == "0") port = DEFAULT_PORT;
 
         // Initializes client and connects to given IP and port.
 
-        if (client.create_tcp_socket(ip.c_str(), port.c_str())) {
+        if (client.create_tcp_socket(selectedoptions["IP_ADDRESS"].c_str(), selectedoptions["PORT"].c_str())) {
             client.start_chat();
         }
     }

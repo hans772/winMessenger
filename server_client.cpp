@@ -1,14 +1,17 @@
 #include "server_client.hpp"
-#include "Winsock2.h"
-#include "message.hpp"
-#include "json.hpp"
 #include <vector>
 #include <string>
 #include <iostream>
+#include <sstream>
 
 ServerClient::ServerClient(std::shared_ptr<ChatRoom> room, SOCKET socket, std::string name) : current_room(room) {
 	client_socket = socket;
     client_name = name;
+}
+
+void ServerClient::broadcast( Message msg ) {
+    std::lock_guard<std::mutex> lock(*current_room->room_mutex);
+    for (SOCKET client : current_room->members) if (client != client_socket) msg.send_message(client);
 }
 
 void ServerClient::client_thread() {
@@ -32,14 +35,12 @@ void ServerClient::client_thread() {
     info.set_sender("Server");
 
     // Broadcasting join message to all other clients
-    {
-        std::lock_guard<std::mutex> lock(*current_room->room_mutex);
-        for (SOCKET client : current_room->members) if (client != client_socket) info.send_message(client);
-    }
-
+    broadcast(info);
+    
     Message recieved_message = Message(DEFAULT_MSG);
     Message disc = Message(DISCONNECT);
     disc.set_sender("Server");
+
     while (connected) {
 
         // recieve message from client
@@ -53,16 +54,8 @@ void ServerClient::client_thread() {
 
             // on recieving a text message from client, message is broadcasted to every other client.
             std::cout << recieved_message.get_sender() << ": " << recieved_message.get_body_str() << '\n';
-            {
-                std::lock_guard<std::mutex> lock(*current_room->room_mutex);
-
-                for (SOCKET client : current_room->members) {
-                    if (client != client_socket) {
-                        recieved_message.send_message(client);
-                    }
-                }
-                break;
-            }
+            broadcast(recieved_message);
+            break;
 
         case CLIENT_COMMAND:
         {
@@ -72,6 +65,8 @@ void ServerClient::client_thread() {
             for (std::string arg : cmd_jsn["arguments"].get<std::vector<std::string>>()) {
                 std::cout << arg << '\n';
             }
+
+            handle_command(cmd_jsn);
 
             break;
         }
@@ -98,8 +93,50 @@ void ServerClient::client_thread() {
     current_room->remove_member(client_socket);
     info.set_type(CLIENT_LEAVE);
 
-    std::lock_guard<std::mutex> lock(*current_room->room_mutex);
-    for (SOCKET client : current_room->members) info.send_message(client);
+    broadcast(info);
 
     closesocket(client_socket);
+}
+
+void ServerClient::handle_command(nlohmann::json cmd_jsn) {
+    std::string command = cmd_jsn["command"].get<std::string>();
+    if (command == "subroom") {
+        std::vector<std::string> args = cmd_jsn["arguments"].get<std::vector<std::string>>();
+        if (args[0] == "join") {
+            Message info = Message(CLIENT_LEAVE_ROOM);
+            nlohmann::json data;
+            data["client"] = client_name;
+            data["room_name"] = args[1];
+            info.set_body_json(data);
+            info.set_sender("Server");
+
+            broadcast(info);
+
+            current_room = current_room->move_member_to_subroom(
+                args[1],
+                client_socket
+            );
+
+            info.set_type(CLIENT_JOIN_ROOM);
+            info.set_body_string(client_name);
+            info.set_sender("Server");
+
+            broadcast(info);
+        }
+        else if (args[0] == "list") {
+            Message info = Message(SERVER_MESSAGE);
+            info.set_sender("Server");
+            std::stringstream ss;
+            ss << "There are " << current_room->sub_rooms.size() << " available sub-rooms in this current room\n";
+            for (std::shared_ptr<SubRoom> room : current_room->sub_rooms) {
+                ss << "     " << room->name << " : " << room->members.size() << " members.\n";
+            }
+            ss << "Use `/subroom join <subroom_name>` to join a subroom" << std::endl;
+            info.set_body_string(
+                ss.str()
+            );
+
+            info.send_message(client_socket);
+        }
+    }
 }

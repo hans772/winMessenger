@@ -11,9 +11,6 @@ class SubRoom;
 
 class ChatRoom
 {
-protected:
-	std::vector<SubRoom> sub_rooms;
-
 public:
 	std::string name;
 	std::shared_ptr<std::mutex> room_mutex;
@@ -24,9 +21,12 @@ public:
 
 	void add_member(SOCKET member);
 	void remove_member(SOCKET member);
+	std::vector< std::shared_ptr<SubRoom>> sub_rooms;
+
+	std::shared_ptr<SubRoom> move_member_to_subroom(std::string room_name, SOCKET member);
 };
 
-class SubRoom : private ChatRoom
+class SubRoom : public ChatRoom
 {
 private:
 	ChatRoom* parent;
