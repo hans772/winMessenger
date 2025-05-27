@@ -1,15 +1,15 @@
 #include <iostream>
-#include <WinSock2.h>
 #include <WS2tcpip.h>
 #include <thread>
 
 #include "server.hpp"
 #include "message.hpp"
-#include "server_client.hpp"
+#include "json.hpp"
 
 using namespace std;
 
 Server::Server(){}
+ThreadedServer::ThreadedServer(){}
 
 int Server::check(int result, string oper) {
     // checking for WSAErrors
@@ -88,84 +88,6 @@ int Server::create_tcp_socket(const char *port) {
     return 1;
 }
 
-ThreadedServer::ThreadedServer(){}
-
-//int ThreadedServer::_client_thread(SOCKET client_socket, vector<SOCKET>& conn_clients) {
-//
-//    /*
-//        This function deals with each client separately, in a single thread.
-//        it accepts 2 arguments, one being the client socket to send and recieve information.
-//        and the other, the reference to the connected clients vector, this is because the server is multithreaded
-//        and each client gets its own dedicated thread, the connected clients must reflect accurately
-//        the number of connected clients.
-//    */
-//
-//    // Each client on connecting will send a message with client information (currently just name).
-//
-//    Message init = Message::recieve_message(client_socket);
-//    string client_name = init.get_body_str();
-//    init.set_sender("Server");
-//   
-//    int connected = 1;
-//
-//    cout << "recieved join message from: " << init.get_body_str() << endl;
-//
-//    // Broadcasting join message to all other clients
-//    for (SOCKET client : conn_clients) if (client != client_socket) init.send_message(client);
-//
-//    Message recieved_message = Message(DEFAULT_MSG);
-//    Message disc = Message(DISCONNECT);
-//    disc.set_sender("Server");
-//    while (connected) {
-//
-//        // recieve message from client
-//        recieved_message = Message::recieve_message(client_socket);
-//        recieved_message.set_sender(client_name);
-//
-//        // handle each type of message
-//        switch (recieved_message.get_type()) {
-//
-//        case CLIENT_TEXT_MESSAGE:
-//
-//            // on recieving a text message from client, message is broadcasted to every other client.
-//            cout << recieved_message.get_sender() << ": " << recieved_message.get_body_str() << '\n';
-//
-//            for (SOCKET client : conn_clients) {
-//                if (client != client_socket) {
-//                    recieved_message.send_message(client);
-//                }
-//            }
-//            break;
-//
-//        case CLIENT_LEAVE:
-//
-//            // On disconnect, disconnect message is sent to client, to cleanly disconnect from server.
-//            cout << client_name << " Disconnected." << endl;
-//            connected = 0;
-//            disc.set_body_string("Client Request");
-//            disc.send_message(client_socket);
-//            break;
-//
-//        case ERRORMSG:
-//
-//            // On error, connection is closed.
-//            cout << "Error in client socket: " << client_name << endl;
-//            connected = 0;
-//            break;
-//        }
-//    }
-//
-//    // removing socket from connected clients, sending leave message and closing connection
-//
-//    conn_clients.erase(find(conn_clients.begin(), conn_clients.end(), client_socket));
-//    init.set_type(CLIENT_LEAVE);
-//    for (SOCKET client : conn_clients) init.send_message(client);
-//
-//    closesocket(client_socket);
-//
-//    return 1;
-//}
-
 int ThreadedServer::listen_and_accept(int max_connections) {
 
     /*
@@ -191,8 +113,9 @@ int ThreadedServer::listen_and_accept(int max_connections) {
             
             //recieves name and chat room from client
 
-            std::string client_name = Message::recieve_message(new_client).get_body_str();
-            std::string room_name = Message::recieve_message(new_client).get_body_str();
+            nlohmann::json join_data = Message::recieve_message(new_client).get_body_json();
+            std::string client_name = join_data["name"].get<std::string>();
+            std::string room_name = join_data["room"].get<std::string>();
             connected++;
 
             //if chatroom already exists, member is added to that chatroom;
@@ -205,8 +128,6 @@ int ThreadedServer::listen_and_accept(int max_connections) {
                     std::shared_ptr<ServerClient> new_sclient = std::make_shared<ServerClient>(
                         chat_rooms[i], new_client, client_name
                     );
-
-                    chat_rooms[i]->add_member(new_client);
 
                     cout << "accepted connection: " << connected << '\n';
 
@@ -261,4 +182,170 @@ int ThreadedServer::listen_and_accept(int max_connections) {
 
     WSACleanup();
     return 1;
+}
+
+int IOServer::listen_and_accept(int max_connections) {
+
+    /*
+        This function lets the server listen for incoming connections, each incoming connection is handled
+        by the server, each client is assigned a socket and is then handled in a separate thread.
+    */
+
+    // checking if socket is available for listening
+    if (!check(listen(_listen_socket, SOMAXCONN), "Listen")) {
+        closesocket(_listen_socket);
+        return 0;
+    }
+
+    iocp = CreateIoCompletionPort(INVALID_HANDLE_VALUE, nullptr, 0, 0);
+    int connected = 0;
+    SYSTEM_INFO sysinfo;
+    GetSystemInfo(&sysinfo);
+    for (int i = 0; i < sysinfo.dwNumberOfProcessors * 2; ++i)
+        CreateThread(nullptr, 0, IOServer::worker_thread, this, 0, nullptr);
+
+    // creating an IOcompletionPort for each client, using the existing IOCP
+    // the server will accept only the number of connections specified in max_connections
+    while (connected < max_connections) {
+        SOCKET new_client = INVALID_SOCKET;
+        new_client = accept(_listen_socket, NULL, NULL);
+        if (new_client == INVALID_SOCKET) cout << "Accept failed with error: " << WSAGetLastError() << '\n';
+        else {
+
+            IOCP_CLIENT_CONTEXT *ctx = new IOCP_CLIENT_CONTEXT;
+            ZeroMemory(&(ctx->overlapped), sizeof(OVERLAPPED));
+            ctx->transfer_data = new char[sizeof(int32_t)];
+            ctx->buffer.buf = ctx->transfer_data;
+            ctx->buffer.len = ctx->expected_bytes = sizeof(int32_t);
+            ctx->operation = IOCP_CLIENT_CONTEXT::READ;
+            ctx->part = IOCP_CLIENT_CONTEXT::HEAD;
+            std::shared_ptr<ServerClient> new_sclient = std::make_shared<ServerClient>(new_client);
+            ctx->transfer_message = new Message();
+            ctx->client = new_sclient;
+
+            connected++;
+            
+            CreateIoCompletionPort((HANDLE)new_client, iocp, 0, 0);
+            WSARecv(new_client, &(ctx->buffer), 1, nullptr, nullptr, &(ctx->overlapped), nullptr);
+            
+        }
+    }
+
+    // close listen socket after max conns
+
+    closesocket(_listen_socket);
+    cout << "closed listen socket" << endl;
+
+    // wait for all connections to disconnect
+
+    while (chat_rooms.size()) {
+        // checking only every 10 seconds to reduce load on the CPU.
+        std::vector<int> empties;
+        for (int i = 0; i < chat_rooms.size(); i++) {
+            if (!chat_rooms[i]->members.size()) {
+                empties.push_back(i);
+            }
+        }
+        for (int i = empties.size() - 1; i >= 0; i--) {
+            chat_rooms.erase(chat_rooms.begin() + empties[i]);
+        }
+        this_thread::sleep_for(chrono::milliseconds(10000));
+    }
+
+    // end program
+
+    WSACleanup();
+    return 1;
+}
+
+DWORD WINAPI IOServer::worker_thread(LPVOID lpParam) {
+
+    IOServer* server = (IOServer*)lpParam;
+
+    DWORD bytes_recieved;
+    ULONG_PTR key;
+    IOCP_CLIENT_CONTEXT* context;
+
+    while (GetQueuedCompletionStatus(server->iocp, &bytes_recieved, &key, (LPOVERLAPPED *)&context, INFINITE)) {
+        if (bytes_recieved == 0) {
+            // handle leaving, send client message for leaving
+            std::cout << "Client disconnected\n";
+            closesocket(context->client->get_socket());
+            free(context->transfer_data);
+            delete context;
+            continue;
+        }
+        switch (context->operation) {
+        case IOCP_CLIENT_CONTEXT::READ:
+            context->expected_bytes -= bytes_recieved;
+            context->recieved_bytes += bytes_recieved;
+
+            if (context->expected_bytes) {
+                context->buffer.buf += bytes_recieved;
+                context->buffer.len -= bytes_recieved;
+
+                WSARecv(context->client->get_socket(), &(context->buffer), 1, nullptr, nullptr, &(context->overlapped), nullptr);
+
+                continue;
+            }
+            switch (context->part) {
+            case IOCP_CLIENT_CONTEXT::HEAD:
+                context->expected_bytes = ntohl(*(int32_t*)(context->transfer_data));
+                context->part = IOCP_CLIENT_CONTEXT::HEADER_JS;
+                break;
+            case IOCP_CLIENT_CONTEXT::HEADER_JS: {
+                nlohmann::json header = Message::deserialize_header(string(context->transfer_data, context->recieved_bytes));
+                context->transfer_message->set_type((MessageType)header["message_type"].get<int>());
+                context->expected_bytes = header["body_length"].get<int>();
+                context->transfer_message->set_sender(header["sender"].get<string>());
+                context->transfer_message->set_body_type(header["body_type"].get<int>());
+                context->part = IOCP_CLIENT_CONTEXT::BODY;
+                break;
+            }
+            case IOCP_CLIENT_CONTEXT::BODY:
+                context->transfer_message->set_body_from_buffer(context->transfer_message->get_body_type(), context->transfer_data, context->recieved_bytes);
+                break;
+            }
+
+            if (context->part == IOCP_CLIENT_CONTEXT::BODY) {
+                if (context->transfer_message->get_type() == MessageType::CLIENT_JOIN) {
+                    context->client->client_name = context->transfer_message->get_body_json()["name"].get<std::string>();
+                    std::string room_name = context->transfer_message->get_body_json()["room"].get<std::string>();
+
+                    //if chatroom already exists, member is added to that chatroom;
+                    bool found = false;
+                    for (int i = 0; i < server->chat_rooms.size(); i++) {
+                        if (server->chat_rooms[i]->name == room_name) {
+                            server->chat_rooms[i]->add_member(context->client->get_socket());
+                            found = true;
+
+                            break;
+                        }
+                    }
+                    if (!found) {
+
+                        // else a new chat room is created
+
+                        std::shared_ptr<ChatRoom> new_room = std::make_shared<ChatRoom>(room_name);
+                        server->chat_rooms.push_back(new_room);
+
+                        new_room->add_member(context->client->get_socket());
+
+                    }
+                }
+
+                // HANDLE MESSAGE
+            }
+            else {
+                free(context->transfer_data);
+                context->recieved_bytes = 0;
+                context->transfer_data = new char[context->expected_bytes];
+                context->buffer.buf = context->transfer_data;
+                context->buffer.len = context->expected_bytes;
+                WSARecv(context->client->get_socket(), &(context->buffer), 1, nullptr, nullptr, &(context->overlapped), nullptr);
+            }
+        }
+        // define what to do for writes;
+    }
+    return 0;
 }

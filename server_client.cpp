@@ -9,6 +9,14 @@ ServerClient::ServerClient(std::shared_ptr<ChatRoom> room, SOCKET socket, std::s
     client_name = name;
 }
 
+ServerClient::ServerClient(SOCKET socket) {
+    client_socket = socket;
+}
+
+SOCKET ServerClient::get_socket() {
+    return client_socket;
+}
+
 void ServerClient::broadcast( Message msg ) {
     std::lock_guard<std::mutex> lock(*current_room->room_mutex);
     for (SOCKET client : current_room->members) if (client != client_socket) msg.send_message(client);
@@ -101,6 +109,19 @@ void ServerClient::client_thread() {
 void ServerClient::handle_command(nlohmann::json cmd_jsn) {
     std::string command = cmd_jsn["command"].get<std::string>();
     if (command == "subroom") {
+        if (!cmd_jsn["arg_num"].get<int>()) {
+            Message info = Message(SERVER_MESSAGE);
+            info.set_sender("Server");
+            std::stringstream ss;
+            ss << "Use `/subroom list to list subrooms" << '\n';
+            ss << "Use `/subroom join <subroom_name>` to join a subroom" << std::endl;
+            info.set_body_string(
+                ss.str()
+            );
+
+            info.send_message(client_socket);
+            return;
+        }
         std::vector<std::string> args = cmd_jsn["arguments"].get<std::vector<std::string>>();
         if (args[0] == "join") {
             Message info = Message(CLIENT_LEAVE_ROOM);

@@ -11,17 +11,17 @@ const int MSGBODY_STRING = 700;
 const int MSGBODY_INT = 701;
 const int MSGBODY_JSON = 702;
 
-enum MessageTypes {
-	DEFAULT_MSG = 0,
-	CLIENT_JOIN = 400,
-	CLIENT_LEAVE = 401,
-	CLIENT_TEXT_MESSAGE = 402,
-	SERVER_MESSAGE = 403,
-	ERRORMSG = 404,
-	DISCONNECT = 405,
-	CLIENT_COMMAND = 406,
-	CLIENT_JOIN_ROOM = 407,
-	CLIENT_LEAVE_ROOM = 408
+enum MessageType {
+	DEFAULT_MSG,
+	CLIENT_JOIN,
+	CLIENT_LEAVE,
+	CLIENT_TEXT_MESSAGE,
+	SERVER_MESSAGE,
+	ERRORMSG,
+	DISCONNECT,
+	CLIENT_COMMAND,
+	CLIENT_JOIN_ROOM,
+	CLIENT_LEAVE_ROOM
 };
 
 static const std::map<std::string, const int> MESSAGE_TYPES = {
@@ -38,10 +38,12 @@ static const std::map<std::string, const int> MESSAGE_TYPES = {
 class Message {
 
 public:
-	Message(int type);
+	Message(MessageType type = MessageType::DEFAULT_MSG);
 
 private:
 	nlohmann::json headerjson;
+
+	int body_type;
 
 	std::string body_s;
 	std::int32_t body_i;
@@ -58,12 +60,16 @@ public:
 	std::string get_sender();
 	int get_bodylen();
 	int get_type();
+	int get_body_type();
 
-	void set_type(int type);
+	void set_type(MessageType type);
+	void set_body_type(int type);
 	void set_sender(std::string sender);
 	void set_body_string(std::string str);
 	void set_body_int(int integ);
 	void set_body_json(nlohmann::json json);
+
+	void set_body_from_buffer(int type, char* bodybuf, int body_length);
 
 	std::string get_body_str();
 	int get_body_int();

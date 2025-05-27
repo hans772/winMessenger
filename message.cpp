@@ -28,7 +28,7 @@ using nlohmann::json;
 
 // Default constructor for message class, initializes all values to default type
 
-Message::Message(int type) 
+Message::Message(MessageType type) 
 {
 	headerjson["body_length"] = 0;
 	headerjson["body_type"] = 0;
@@ -45,11 +45,13 @@ string Message::get_sender() { return headerjson["sender"].get<string>(); }
 int Message::get_bodylen() { return headerjson["body_length"].get<int>(); }
 int Message::get_type() { return headerjson["message_type"].get<int>(); }
 
+int Message::get_body_type() { return headerjson["body_type"];  }
 string Message::get_body_str() { return body_s; }
 int Message::get_body_int() { return ntohl(body_i); }
 nlohmann::json Message::get_body_json() { return body_json; }
 
-void Message::set_type(int type) { headerjson["message_type"] = type; }
+void Message::set_type(MessageType type) { headerjson["message_type"] = type; }
+void Message::set_body_type(int body_type) { headerjson["body_type"] = body_type; }
 void Message::set_sender(string sender) { headerjson["sender"] = sender; }
 
 void Message::set_body_string(string str) {
@@ -154,8 +156,9 @@ Message Message::recieve_message(SOCKET socket) {
 
 	json header = Message::deserialize_header(string(headerbuf, ntohl(headerlen)));
 
-	Message return_msg = Message(header["message_type"].get<int>());
-
+	Message return_msg = Message((MessageType)header["message_type"].get<int>());
+	return_msg.set_sender(header["sender"].get<string>());
+	return_msg.set_body_type(header["body_type"].get<int>());
 	// Body length is specified inside the header, which can be used to create another buffer.
 
 	rem = header["body_length"].get<int>();
@@ -181,36 +184,40 @@ Message Message::recieve_message(SOCKET socket) {
 	// Creating the return message which will be returned.
 	// Body type will be specified in the message header.
 
-	switch (header["body_type"].get<int>()) {
-	case MSGBODY_STRING:
-	{
-		string body_s;
-		body_s.assign(bodybuf, bodybuf + header["body_length"].get<int>());
-		return_msg.set_body_string(body_s);
-		break;
-	}
-	case MSGBODY_INT:
-	{
-		int32_t body_i;
-		memcpy(&body_i, bodybuf, sizeof(int32_t));
-		return_msg.set_body_int(body_i);
-		break;
-	}
-	case MSGBODY_JSON:
-	{
-		string body_s;
-		body_s.assign(bodybuf, bodybuf + header["body_length"].get<int>());
-		json body_js = json::parse(body_s);
-		return_msg.set_body_json(body_js);
-		break;
-	}
-	}
+	return_msg.set_body_from_buffer(return_msg.get_body_type(), bodybuf, header["body_length"].get<int>());
 	return_msg.set_sender(header["sender"].get<string>());
 	
 	delete[] bodybuf;
 	delete[] headerbuf;
 
 	return return_msg;
+}
+
+void Message::set_body_from_buffer(int type, char* bodybuf, int body_length) {
+	switch (type) {
+	case MSGBODY_STRING:
+	{
+		string body_s;
+		body_s.assign(bodybuf, bodybuf + body_length);
+		set_body_string(body_s);
+		break;
+	}
+	case MSGBODY_INT:
+	{
+		int32_t body_i;
+		memcpy(&body_i, bodybuf, sizeof(int32_t));
+		set_body_int(body_i);
+		break;
+	}
+	case MSGBODY_JSON:
+	{
+		string body_s;
+		body_s.assign(bodybuf, bodybuf + body_length);
+		json body_js = json::parse(body_s);
+		set_body_json(body_js);
+		break;
+	}
+	}
 }
 
 int Message::send_message(SOCKET socket) {

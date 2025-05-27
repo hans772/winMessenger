@@ -14,9 +14,12 @@ private:
 public:
 	std::string client_name;
 	ServerClient(std::shared_ptr<ChatRoom> room, SOCKET socket, std::string name);
+	ServerClient(SOCKET socket);
 	void broadcast(Message msg);
 	void client_thread();
 	void handle_command(nlohmann::json cmd_json);
+
+	SOCKET get_socket();
 };
 
 #endif // !SERVER_CLIENT_HPP

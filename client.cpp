@@ -104,10 +104,12 @@ int ThreadedClient::start_chat() {
     std::cout << "-------------------------" << room << "-------------------------- - " << endl;
     // creating a join message to send to server as initial message
 
+    nlohmann::json body;
+    body["name"] = name;
+    body["room"] = room;
+
     Message msg = Message(CLIENT_JOIN);
-    msg.set_body_string(name);
-    msg.send_message(_connect_socket);
-    msg.set_body_string(room);
+    msg.set_body_json(body);
     msg.send_message(_connect_socket);
 
     // creating a write thread, one can also create a listen_thread if they intend on doing other things on the main thread
