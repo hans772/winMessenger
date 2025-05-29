@@ -104,7 +104,12 @@ int main()
 
     menufmt.close();
     menufmt.clear();
-    menufmt.open("./" + selectedoptions["START"] + "select.txt");
+    if (selectedoptions["START"] == "Threaded Server")    
+        menufmt.open("./serverselect.txt");
+    else if (selectedoptions["START"] == "IO Server") 
+        menufmt.open("./serverselect.txt");
+    else 
+        menufmt.open("./" + selectedoptions["START"] + "select.txt");
 
     if (menufmt.is_open()) modify_menu(menufmt, std::ref(MENU), std::ref(selectedoptions));
     else throw("Error Encountered");
@@ -122,11 +127,18 @@ int main()
     // client requires both server_ip (defaulted to localhost) and port
 
     string port;
-    if (selectedoptions["START"] == "server") {
+    if (selectedoptions["START"] == "Threaded Server") {
 
         ThreadedServer server = ThreadedServer();
 
         // Initializes server and starts listening for incoming connections.
+
+        if (server.create_tcp_socket(selectedoptions["PORT"].c_str())) {
+            server.listen_and_accept(std::stoi(selectedoptions["CLIENTS"]));
+        }
+    }
+    else if (selectedoptions["START"] == "IO Server") {
+        IOServer server = IOServer();
 
         if (server.create_tcp_socket(selectedoptions["PORT"].c_str())) {
             server.listen_and_accept(std::stoi(selectedoptions["CLIENTS"]));

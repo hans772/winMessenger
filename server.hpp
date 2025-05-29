@@ -3,23 +3,12 @@
 
 #include <WinSock2.h>
 #include <vector>
-#include "server_client.hpp"
 #include "rooms.hpp"
+#include "server_client.hpp"
+#include "io_server_helper.hpp"
 #include <MSWSock.h>
 #include <Windows.h>
-
-struct IOCP_CLIENT_CONTEXT {
-	OVERLAPPED overlapped;
-	WSABUF buffer;
-	int expected_bytes;
-	int recieved_bytes;
-	char* transfer_data;
-	std::shared_ptr<ServerClient> client;
-	enum {READ, WRITE} operation;
-	enum {HEAD, HEADER_JS, BODY} part;
-
-	Message *transfer_message;
-};
+#include "mutex"
 
 class Server
 {
@@ -46,7 +35,9 @@ private:
 class IOServer : public Server
 {
 public:
+	IOServer();
 	HANDLE iocp;
+	std::shared_ptr<std::mutex> crooms_mutex;
 	int listen_and_accept(int max_connections);
 	static DWORD WINAPI worker_thread(LPVOID lpParam);
 private:

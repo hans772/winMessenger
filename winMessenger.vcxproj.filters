@@ -39,6 +39,9 @@
     <ClCompile Include="server_client.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="io_server_helper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="client.hpp">
@@ -51,6 +54,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="server.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="io_server_helper.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

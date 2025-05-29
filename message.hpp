@@ -39,6 +39,7 @@ class Message {
 
 public:
 	Message(MessageType type = MessageType::DEFAULT_MSG);
+	Message(Message& other);
 
 private:
 	nlohmann::json headerjson;
@@ -73,6 +74,7 @@ public:
 
 	std::string get_body_str();
 	int get_body_int();
+	int32_t get_body_int32();
 	nlohmann::json get_body_json();
 
 	void print_message();

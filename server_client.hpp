@@ -5,6 +5,7 @@
 #include <WinSock2.h>
 #include "json.hpp"
 #include "message.hpp"
+#include "mutex"
 
 class ServerClient
 {
@@ -19,6 +20,8 @@ public:
 	void client_thread();
 	void handle_command(nlohmann::json cmd_json);
 
+	void set_room(std::shared_ptr<ChatRoom> room);
+	std::string get_room_name();
 	SOCKET get_socket();
 };
 

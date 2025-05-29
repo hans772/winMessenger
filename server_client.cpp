@@ -22,6 +22,15 @@ void ServerClient::broadcast( Message msg ) {
     for (SOCKET client : current_room->members) if (client != client_socket) msg.send_message(client);
 }
 
+void ServerClient::set_room(std::shared_ptr<ChatRoom> room) {
+    current_room = room;
+}
+
+std::string ServerClient::get_room_name() {
+    return current_room->name;
+}
+
+
 void ServerClient::client_thread() {
 
     /*

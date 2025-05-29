@@ -3,6 +3,7 @@
 #include <thread>
 
 #include "server.hpp"
+#include "io_server_helper.hpp"
 #include "message.hpp"
 #include "json.hpp"
 
@@ -10,6 +11,9 @@ using namespace std;
 
 Server::Server(){}
 ThreadedServer::ThreadedServer(){}
+IOServer::IOServer() {
+    crooms_mutex = std::make_shared<std::mutex>();
+}
 
 int Server::check(int result, string oper) {
     // checking for WSAErrors
@@ -206,27 +210,41 @@ int IOServer::listen_and_accept(int max_connections) {
 
     // creating an IOcompletionPort for each client, using the existing IOCP
     // the server will accept only the number of connections specified in max_connections
+
     while (connected < max_connections) {
         SOCKET new_client = INVALID_SOCKET;
         new_client = accept(_listen_socket, NULL, NULL);
         if (new_client == INVALID_SOCKET) cout << "Accept failed with error: " << WSAGetLastError() << '\n';
         else {
 
-            IOCP_CLIENT_CONTEXT *ctx = new IOCP_CLIENT_CONTEXT;
-            ZeroMemory(&(ctx->overlapped), sizeof(OVERLAPPED));
-            ctx->transfer_data = new char[sizeof(int32_t)];
-            ctx->buffer.buf = ctx->transfer_data;
-            ctx->buffer.len = ctx->expected_bytes = sizeof(int32_t);
-            ctx->operation = IOCP_CLIENT_CONTEXT::READ;
-            ctx->part = IOCP_CLIENT_CONTEXT::HEAD;
-            std::shared_ptr<ServerClient> new_sclient = std::make_shared<ServerClient>(new_client);
-            ctx->transfer_message = new Message();
-            ctx->client = new_sclient;
-
+            IOCP_CLIENT_CONTEXT* ctx = IOServerHelper::create_new_context(
+                IOCP_CLIENT_CONTEXT::READ, 
+                IOCP_CLIENT_CONTEXT::HEAD, 
+                new_client, 
+                new Message());
             connected++;
             
-            CreateIoCompletionPort((HANDLE)new_client, iocp, 0, 0);
-            WSARecv(new_client, &(ctx->buffer), 1, nullptr, nullptr, &(ctx->overlapped), nullptr);
+            HANDLE assoc = CreateIoCompletionPort((HANDLE)new_client, iocp, 0, 0);
+            if (!assoc) {
+                std::cerr << "CreateIoCompletionPort failed: " << GetLastError() << "\n";
+                closesocket(new_client);
+                delete[] ctx->transfer_data;
+                delete ctx;
+                continue;
+            }
+
+            DWORD flags = 0;
+            int result = WSARecv(new_client, &(ctx->buffer), 1, nullptr, &flags, &(ctx->overlapped), nullptr);
+            if (result == SOCKET_ERROR) {
+                int err = WSAGetLastError();
+                if (err != WSA_IO_PENDING) {
+                    std::cerr << "WSARecv failed: " << err << "\n";
+                    closesocket(new_client);
+                    delete[] ctx->transfer_data;
+                    delete ctx;
+                    continue;
+                }
+            }
             
         }
     }
@@ -258,6 +276,7 @@ int IOServer::listen_and_accept(int max_connections) {
     return 1;
 }
 
+
 DWORD WINAPI IOServer::worker_thread(LPVOID lpParam) {
 
     IOServer* server = (IOServer*)lpParam;
@@ -266,17 +285,37 @@ DWORD WINAPI IOServer::worker_thread(LPVOID lpParam) {
     ULONG_PTR key;
     IOCP_CLIENT_CONTEXT* context;
 
+
+    IOServerHelper helper(&server->chat_rooms, server->crooms_mutex);
+
     while (GetQueuedCompletionStatus(server->iocp, &bytes_recieved, &key, (LPOVERLAPPED *)&context, INFINITE)) {
+
         if (bytes_recieved == 0) {
             // handle leaving, send client message for leaving
             std::cout << "Client disconnected\n";
-            closesocket(context->client->get_socket());
-            free(context->transfer_data);
+            closesocket(context->client);
+            delete[] context->transfer_data;
             delete context;
             continue;
         }
         switch (context->operation) {
         case IOCP_CLIENT_CONTEXT::READ:
+
+            context->expected_bytes -= bytes_recieved;
+            context->recieved_bytes += bytes_recieved;
+
+            if (context->expected_bytes) {
+                context->buffer.buf = context->transfer_data + bytes_recieved;
+                context->buffer.len = context->expected_bytes;
+
+                DWORD flags = 0;
+                WSARecv(context->client, &(context->buffer), 1, nullptr, &flags, &(context->overlapped), nullptr);
+
+                continue;
+            }
+            helper.handle_read(context);
+            break;
+        case IOCP_CLIENT_CONTEXT::WRITE:
             context->expected_bytes -= bytes_recieved;
             context->recieved_bytes += bytes_recieved;
 
@@ -284,68 +323,17 @@ DWORD WINAPI IOServer::worker_thread(LPVOID lpParam) {
                 context->buffer.buf += bytes_recieved;
                 context->buffer.len -= bytes_recieved;
 
-                WSARecv(context->client->get_socket(), &(context->buffer), 1, nullptr, nullptr, &(context->overlapped), nullptr);
+                WSASend(context->client, &context->buffer, 1, nullptr, 0, &context->overlapped, nullptr);
 
                 continue;
             }
-            switch (context->part) {
-            case IOCP_CLIENT_CONTEXT::HEAD:
-                context->expected_bytes = ntohl(*(int32_t*)(context->transfer_data));
-                context->part = IOCP_CLIENT_CONTEXT::HEADER_JS;
-                break;
-            case IOCP_CLIENT_CONTEXT::HEADER_JS: {
-                nlohmann::json header = Message::deserialize_header(string(context->transfer_data, context->recieved_bytes));
-                context->transfer_message->set_type((MessageType)header["message_type"].get<int>());
-                context->expected_bytes = header["body_length"].get<int>();
-                context->transfer_message->set_sender(header["sender"].get<string>());
-                context->transfer_message->set_body_type(header["body_type"].get<int>());
-                context->part = IOCP_CLIENT_CONTEXT::BODY;
-                break;
-            }
-            case IOCP_CLIENT_CONTEXT::BODY:
-                context->transfer_message->set_body_from_buffer(context->transfer_message->get_body_type(), context->transfer_data, context->recieved_bytes);
-                break;
-            }
 
-            if (context->part == IOCP_CLIENT_CONTEXT::BODY) {
-                if (context->transfer_message->get_type() == MessageType::CLIENT_JOIN) {
-                    context->client->client_name = context->transfer_message->get_body_json()["name"].get<std::string>();
-                    std::string room_name = context->transfer_message->get_body_json()["room"].get<std::string>();
-
-                    //if chatroom already exists, member is added to that chatroom;
-                    bool found = false;
-                    for (int i = 0; i < server->chat_rooms.size(); i++) {
-                        if (server->chat_rooms[i]->name == room_name) {
-                            server->chat_rooms[i]->add_member(context->client->get_socket());
-                            found = true;
-
-                            break;
-                        }
-                    }
-                    if (!found) {
-
-                        // else a new chat room is created
-
-                        std::shared_ptr<ChatRoom> new_room = std::make_shared<ChatRoom>(room_name);
-                        server->chat_rooms.push_back(new_room);
-
-                        new_room->add_member(context->client->get_socket());
-
-                    }
-                }
-
-                // HANDLE MESSAGE
-            }
-            else {
-                free(context->transfer_data);
-                context->recieved_bytes = 0;
-                context->transfer_data = new char[context->expected_bytes];
-                context->buffer.buf = context->transfer_data;
-                context->buffer.len = context->expected_bytes;
-                WSARecv(context->client->get_socket(), &(context->buffer), 1, nullptr, nullptr, &(context->overlapped), nullptr);
-            }
+            helper.handle_write(context);
+            break;
         }
         // define what to do for writes;
     }
+
+    std::cout << "thread exited" << std::endl;
     return 0;
 }

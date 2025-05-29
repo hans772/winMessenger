@@ -38,6 +38,15 @@ Message::Message(MessageType type)
 	body_s = "";
 }
 
+Message::Message(Message& other) {
+	headerjson = other.get_header();
+	body_type = other.get_body_type();
+
+	body_s = other.get_body_str();
+	body_i = other.get_body_int();
+	body_json = other.get_body_json();
+}
+
 // Default getters and setters for the message class
 
 json Message::get_header() { return headerjson; }
@@ -48,7 +57,8 @@ int Message::get_type() { return headerjson["message_type"].get<int>(); }
 int Message::get_body_type() { return headerjson["body_type"];  }
 string Message::get_body_str() { return body_s; }
 int Message::get_body_int() { return ntohl(body_i); }
-nlohmann::json Message::get_body_json() { return body_json; }
+int32_t Message::get_body_int32() { return body_i;  };
+nlohmann::json Message::get_body_json() {  return body_json; }
 
 void Message::set_type(MessageType type) { headerjson["message_type"] = type; }
 void Message::set_body_type(int body_type) { headerjson["body_type"] = body_type; }
@@ -215,6 +225,7 @@ void Message::set_body_from_buffer(int type, char* bodybuf, int body_length) {
 		body_s.assign(bodybuf, bodybuf + body_length);
 		json body_js = json::parse(body_s);
 		set_body_json(body_js);
+		std::cout << body_js.dump() << std::endl;
 		break;
 	}
 	}
