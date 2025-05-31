@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include "logger.hpp"
 
 ServerClient::ServerClient(std::shared_ptr<ChatRoom> room, SOCKET socket, std::string name) : current_room(room) {
 	client_socket = socket;
@@ -44,8 +45,8 @@ void ServerClient::client_thread() {
     // Each client on connecting will send a message with client information (currently just name).
 
     int connected = 1;
-
-    std::cout << "recieved join message from: " << client_name << std::endl;
+    current_room->add_count();
+    Logger::get().log(LogLevel::INFO, LogModule::SERVER, "Recieved Join Message from ", client_name);
 
     Message info = Message(CLIENT_JOIN);
     info.set_body_string(client_name);
@@ -78,10 +79,7 @@ void ServerClient::client_thread() {
         {
             nlohmann::json cmd_jsn = recieved_message.get_body_json();
 
-            std::cout << "recieved command: " << cmd_jsn["command"].get<std::string>() << " from " << client_name << " with args: \n";
-            for (std::string arg : cmd_jsn["arguments"].get<std::vector<std::string>>()) {
-                std::cout << arg << '\n';
-            }
+            Logger::get().log(LogLevel::INFO, LogModule::SERVER, "Recieved Command: ", cmd_jsn["command"].get<std::string>(), " From ", client_name);
 
             handle_command(cmd_jsn);
 
@@ -90,7 +88,8 @@ void ServerClient::client_thread() {
         case CLIENT_LEAVE:
 
             // On disconnect, disconnect message is sent to client, to cleanly disconnect from server.
-            std::cout << client_name << " Disconnected." << std::endl;
+            Logger::get().log(LogLevel::INFO, LogModule::SERVER, client_name, " Disconnected");
+
             connected = 0;
             disc.set_body_string("Client Request");
             disc.send_message(client_socket);
@@ -99,7 +98,8 @@ void ServerClient::client_thread() {
         case ERRORMSG:
 
             // On error, connection is closed.
-            std::cout << "Error in client socket: " << client_name << std::endl;
+            Logger::get().log(LogLevel::INFO, LogModule::SERVER, "Encountered Error in Client Socket: ", client_name);
+
             connected = 0;
             break;
         }
@@ -108,6 +108,7 @@ void ServerClient::client_thread() {
     // removing socket from connected clients, sending leave message and closing connection
 
     current_room->remove_member(client_socket);
+    current_room->reduce_count();
     info.set_type(CLIENT_LEAVE);
 
     broadcast(info);

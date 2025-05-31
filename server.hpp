@@ -15,6 +15,7 @@ class Server
 public:
 	Server();
 	int create_tcp_socket(const char* port);
+	int connected;
 
 	int check(int result, std::string oper);
 

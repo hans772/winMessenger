@@ -1,0 +1,246 @@
+{
+"level": "DEBUG",
+"message": "hi",
+"module": "CLIENT",
+"timestamp": "2025-05-31 06:22:37"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-05-31 06:22:40"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-05-31 06:23:17"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-05-31 06:23:33"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-05-31 06:23:38"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-05-31 06:23:38"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-05-31 06:24:11"
+}
+{
+"level": "INFO",
+"message": "Closed Listen Socket",
+"module": "SERVER",
+"timestamp": "2025-05-31 06:24:11"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-05-31 06:24:11"
+}
+{
+"level": "INFO",
+"message": "Ending Connection",
+"module": "CLIENT",
+"timestamp": "2025-05-31 06:24:29"
+}
+{
+"level": "INFO",
+"message": "hk Disconnected",
+"module": "SERVER",
+"timestamp": "2025-05-31 06:24:29"
+}
+{
+"level": "INFO",
+"message": "Connection Closed due to: Client Request",
+"module": "CLIENT",
+"timestamp": "2025-05-31 06:24:29"
+}
+{
+"level": "INFO",
+"message": "Client Disconnected",
+"module": "SERVER",
+"timestamp": "2025-05-31 06:24:29"
+}
+{
+"level": "INFO",
+"message": "WSACleanup Started",
+"module": "NETWORK",
+"timestamp": "2025-05-31 06:24:29"
+}
+{
+"level": "INFO",
+"message": "Recieved Command: subroom From jk",
+"module": "SERVER",
+"timestamp": "2025-05-31 06:24:40"
+}
+{
+"level": "INFO",
+"message": "Recieved Command: subroom From jk",
+"module": "SERVER",
+"timestamp": "2025-05-31 06:24:46"
+}
+{
+"level": "INFO",
+"message": "Recieved Command: subroom From jk",
+"module": "SERVER",
+"timestamp": "2025-05-31 06:24:53"
+}
+{
+"level": "INFO",
+"message": "Ending Connection",
+"module": "CLIENT",
+"timestamp": "2025-05-31 06:24:56"
+}
+{
+"level": "INFO",
+"message": "jk Disconnected",
+"module": "SERVER",
+"timestamp": "2025-05-31 06:24:56"
+}
+{
+"level": "INFO",
+"message": "Connection Closed due to: Client Request",
+"module": "CLIENT",
+"timestamp": "2025-05-31 06:24:56"
+}
+{
+"level": "INFO",
+"message": "Client Disconnected",
+"module": "SERVER",
+"timestamp": "2025-05-31 06:24:56"
+}
+{
+"level": "INFO",
+"message": "WSACleanup Started",
+"module": "NETWORK",
+"timestamp": "2025-05-31 06:24:56"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-05-31 06:25:01"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-05-31 06:25:01"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-05-31 06:25:01"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-05-31 06:25:01"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-05-31 06:25:01"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-05-31 06:25:01"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-05-31 06:25:01"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-05-31 06:25:01"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-05-31 06:25:01"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-05-31 06:25:01"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-05-31 06:25:01"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-05-31 06:25:01"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-05-31 06:25:01"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-05-31 06:25:01"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-05-31 06:25:01"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-05-31 06:25:01"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-05-31 06:25:01"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-05-31 06:25:01"
+}
+{
+"level": "INFO",
+"message": "WSACleanup Started",
+"module": "NETWORK",
+"timestamp": "2025-05-31 06:25:01"
+}

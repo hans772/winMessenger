@@ -9,6 +9,7 @@
 #include <thread>
 #include "client.hpp"
 #include "server.hpp"
+#include "logger.hpp"
 
 // This pragma makes sure visual studio knows that winsock is a required library.
 // May not work on other IDEs
@@ -100,6 +101,8 @@ int main()
     std::string MENU;
     std::map<std::string, std::string> selectedoptions;
     
+    Logger::get().set_min_log_level(LogLevel::DEBUG);
+
     modify_menu(menufmt, std::ref(MENU), std::ref(selectedoptions));
 
     menufmt.close();
@@ -119,7 +122,7 @@ int main()
     WSADATA wsadata;
 
     if (WSAStartup(MAKEWORD(2, 2), &wsadata) != 0) {
-        cout << "Error in WSAStartup()" << endl;
+        Logger::get().log(LogLevel::ERR, LogModule::NETWORK, "WSAStartup Failed");
         return 1;
     }
 
@@ -154,7 +157,8 @@ int main()
         }
     }
 
-    cout << "Cleanup started." << endl;
+    Logger::get().log(LogLevel::INFO, LogModule::NETWORK, "WSACleanup Started");
+
     WSACleanup();
 
     return 0;

@@ -10,6 +10,7 @@
 #include <mutex>
 #include <chrono>
 #include <conio.h>
+#include "logger.hpp"
 
 using namespace std;
 std::mutex console_mutex;
@@ -19,7 +20,8 @@ Client::Client() {   }
 int Client::check(int result, string oper) {
     // checking for WSAerrors
     if (result != 0) {
-        std::cout << "Encountered an error in: `" << oper << "` with code: " << WSAGetLastError() << endl;;
+        Logger::get().log(LogLevel::ERR, LogModule::CLIENT, "Operation: ", oper, "Failed with Code:", WSAGetLastError());
+
         return 0;
     }
     return 1;
@@ -60,7 +62,8 @@ int Client::create_tcp_socket(const char* ip, const char* port) {
         if (_connect_socket == INVALID_SOCKET) {
             ptr = ptr->ai_next;
             if (ptr == NULL) {
-                std::cout << "Unable to create socket." << endl;
+                Logger::get().log(LogLevel::ERR, LogModule::CLIENT, "Unable to Create Socket");
+
                 return 0;
             }
             continue;
@@ -74,13 +77,15 @@ int Client::create_tcp_socket(const char* ip, const char* port) {
 
             ptr = ptr->ai_next;
             if (ptr == NULL) {
-                std::cout << "Unable to connect to available server" << endl;
+                Logger::get().log(LogLevel::ERR, LogModule::CLIENT, "Unable to Connect to Server");
+
                 return 0;
             }
             continue;
         }
 
-        std::cout << "Connected to server on port: " << port << endl;
+        Logger::get().log(LogLevel::INFO, LogModule::CLIENT, "Connected to Server on Port: ", port);
+
         break;
     }
 
@@ -101,7 +106,7 @@ int ThreadedClient::start_chat() {
     std::cout << "Enter the room you wish to join: ";
     cin >> room;
 
-    std::cout << "-------------------------" << room << "-------------------------- - " << endl;
+    std::cout << "\nCHATROOM: " << room << "\n" << endl;
     // creating a join message to send to server as initial message
 
     nlohmann::json body;
@@ -141,6 +146,9 @@ int ThreadedClient::_listen_thread(SOCKET server) {
         // handling normal messages and leave and join messages are very straightforward
 
         switch (recieved.get_type()) {
+        case CLIENT_SETUP:
+            std::cout << "\nW E L C O M E    :    " << recieved.get_body_json()["username"].get<std::string>() << "\n\n";
+            break;
         case CLIENT_TEXT_MESSAGE:
         case SERVER_MESSAGE:
             std::cout 
@@ -169,14 +177,16 @@ int ThreadedClient::_listen_thread(SOCKET server) {
         }
         case ERRORMSG:
             // on account of an error, the socket will be closed automatically.
-            std::cout << "Encountered an error with code: " << recieved.get_body_int() << endl;
+            Logger::get().log(LogLevel::INFO, LogModule::CLIENT, "Recieved an Error Message with code: ", recieved.get_body_int());
+
             _connected = 0;
             closesocket(server);
             break;
         case DISCONNECT:
             // other than errors, the socket can only close connections in this way.
             _connected = 0;
-            std::cout << "Connection closed due to: " << recieved.get_body_str() << endl;
+            Logger::get().log(LogLevel::INFO, LogModule::CLIENT, "Connection Closed due to: ", recieved.get_body_str());
+
             closesocket(server);
             break;
         }
@@ -285,7 +295,8 @@ int ThreadedClient::_write_thread(SOCKET server) {
 
     // ending connection, and requesting server to send DISCONNECT message.
 
-    std::cout << "Ending connection." << endl;
+    Logger::get().log(LogLevel::INFO, LogModule::CLIENT, "Ending Connection");
+
     std::cout.flush();
     Message msg = Message(CLIENT_LEAVE);
     msg.set_body_string(" ");

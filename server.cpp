@@ -6,10 +6,12 @@
 #include "io_server_helper.hpp"
 #include "message.hpp"
 #include "json.hpp"
+#include "logger.hpp"
+
 
 using namespace std;
 
-Server::Server(){}
+Server::Server() { connected = 0; }
 ThreadedServer::ThreadedServer(){}
 IOServer::IOServer() {
     crooms_mutex = std::make_shared<std::mutex>();
@@ -18,7 +20,7 @@ IOServer::IOServer() {
 int Server::check(int result, string oper) {
     // checking for WSAErrors
     if (result != 0) {
-        cout << "Encountered an error in: `" << oper << "` with code: " << WSAGetLastError() << endl;;
+        Logger::get().log(LogLevel::ERR, LogModule::SERVER, "Operation: ", oper, "Failed with Code:", WSAGetLastError());
         return 0;
     }
     return 1;
@@ -51,7 +53,6 @@ int Server::create_tcp_socket(const char *port) {
     _listen_socket = INVALID_SOCKET;
 
     ptr = result;
-
     // Loop through result to create an available socket for accepting connections.
 
     while (ptr != NULL) {
@@ -63,7 +64,8 @@ int Server::create_tcp_socket(const char *port) {
         if (_listen_socket == INVALID_SOCKET) {
             ptr = ptr->ai_next;
             if (ptr == NULL) {
-                cout << "Unable to create socket." << endl;
+                Logger::get().log(LogLevel::ERR, LogModule::SERVER, "Unable to Create Socket");
+
                 return 0;
             }
             continue;
@@ -77,13 +79,15 @@ int Server::create_tcp_socket(const char *port) {
 
             ptr = ptr->ai_next;
             if (ptr == NULL) {
-                cout << "Unable to bind to available sockets." << endl;
+                Logger::get().log(LogLevel::ERR, LogModule::SERVER, "Unable to Bind to Socket");
+
                 return 0;
             }
             continue;
         }
 
-        cout << "Created a server on port: " << port << endl;
+        Logger::get().log(LogLevel::INFO, LogModule::SERVER, "Created Server on Port: ", port);
+
         break;
     }
     // memory management
@@ -105,14 +109,12 @@ int ThreadedServer::listen_and_accept(int max_connections) {
         return 0;
     }
 
-    int connected = 0;
-
     // accepting each client and assigning it a thread.
     // the server will accept only the number of connections specified in max_connections
     while (connected < max_connections) {
         SOCKET new_client = INVALID_SOCKET;
         new_client = accept(_listen_socket, NULL, NULL);
-        if (new_client == INVALID_SOCKET) cout << "Accept failed with error: " << WSAGetLastError() << '\n';
+        if (new_client == INVALID_SOCKET) Logger::get().log(LogLevel::ERR, LogModule::NETWORK, "Accept Failed with Error: ", WSAGetLastError());
         else {
             
             //recieves name and chat room from client
@@ -133,7 +135,7 @@ int ThreadedServer::listen_and_accept(int max_connections) {
                         chat_rooms[i], new_client, client_name
                     );
 
-                    cout << "accepted connection: " << connected << '\n';
+                    Logger::get().log(LogLevel::INFO, LogModule::SERVER, "Accepted Connection");
 
                     thread t(&ServerClient::client_thread, new_sclient);
                     t.detach();
@@ -153,7 +155,7 @@ int ThreadedServer::listen_and_accept(int max_connections) {
 
                 new_room->add_member(new_client);  
 
-                cout << "accepted connection: " << connected << '\n';
+                Logger::get().log(LogLevel::INFO, LogModule::SERVER, "Accepted Connection");
 
                 thread t(&ServerClient::client_thread, new_sclient);
                 t.detach();
@@ -164,7 +166,7 @@ int ThreadedServer::listen_and_accept(int max_connections) {
     // close listen socket after max conns
 
     closesocket(_listen_socket);
-    cout << "closed listen socket" << endl;
+    Logger::get().log(LogLevel::INFO, LogModule::SERVER, "Closed Listen Socket");
 
     // wait for all connections to disconnect
 
@@ -181,8 +183,6 @@ int ThreadedServer::listen_and_accept(int max_connections) {
         }
         this_thread::sleep_for(chrono::milliseconds(10000));
     }
-
-    // end program
 
     WSACleanup();
     return 1;
@@ -202,10 +202,10 @@ int IOServer::listen_and_accept(int max_connections) {
     }
 
     iocp = CreateIoCompletionPort(INVALID_HANDLE_VALUE, nullptr, 0, 0);
-    int connected = 0;
     SYSTEM_INFO sysinfo;
     GetSystemInfo(&sysinfo);
-    for (int i = 0; i < sysinfo.dwNumberOfProcessors * 2; ++i)
+    int thread_count = sysinfo.dwNumberOfProcessors * 2;
+    for (int i = 0; i < thread_count; ++i)
         CreateThread(nullptr, 0, IOServer::worker_thread, this, 0, nullptr);
 
     // creating an IOcompletionPort for each client, using the existing IOCP
@@ -214,7 +214,7 @@ int IOServer::listen_and_accept(int max_connections) {
     while (connected < max_connections) {
         SOCKET new_client = INVALID_SOCKET;
         new_client = accept(_listen_socket, NULL, NULL);
-        if (new_client == INVALID_SOCKET) cout << "Accept failed with error: " << WSAGetLastError() << '\n';
+        if (new_client == INVALID_SOCKET) Logger::get().log(LogLevel::ERR, LogModule::NETWORK, "Accept Failed with Error: " , WSAGetLastError());
         else {
 
             IOCP_CLIENT_CONTEXT* ctx = IOServerHelper::create_new_context(
@@ -222,45 +222,44 @@ int IOServer::listen_and_accept(int max_connections) {
                 IOCP_CLIENT_CONTEXT::HEAD, 
                 new_client, 
                 new Message());
-            connected++;
             
             HANDLE assoc = CreateIoCompletionPort((HANDLE)new_client, iocp, 0, 0);
             if (!assoc) {
-                std::cerr << "CreateIoCompletionPort failed: " << GetLastError() << "\n";
+                Logger::get().log(LogLevel::ERR, LogModule::SERVER, "CICP Failed");
                 closesocket(new_client);
                 delete[] ctx->transfer_data;
                 delete ctx;
                 continue;
             }
-
+            connected++;
+            Logger::get().log(LogLevel::INFO, LogModule::SERVER, "Accepted Connection");
             DWORD flags = 0;
             int result = WSARecv(new_client, &(ctx->buffer), 1, nullptr, &flags, &(ctx->overlapped), nullptr);
             if (result == SOCKET_ERROR) {
                 int err = WSAGetLastError();
                 if (err != WSA_IO_PENDING) {
-                    std::cerr << "WSARecv failed: " << err << "\n";
+                    Logger::get().log(LogLevel::ERR, LogModule::SERVER, "WSARecv Failed");
                     closesocket(new_client);
                     delete[] ctx->transfer_data;
                     delete ctx;
                     continue;
                 }
             }
-            
         }
     }
 
     // close listen socket after max conns
 
     closesocket(_listen_socket);
-    cout << "closed listen socket" << endl;
+    Logger::get().log(LogLevel::INFO, LogModule::SERVER, "Closed Listen Socket");
 
     // wait for all connections to disconnect
 
-    while (chat_rooms.size()) {
+    while (connected) {
         // checking only every 10 seconds to reduce load on the CPU.
         std::vector<int> empties;
         for (int i = 0; i < chat_rooms.size(); i++) {
-            if (!chat_rooms[i]->members.size()) {
+            if (!chat_rooms[i]->member_count) {
                 empties.push_back(i);
             }
         }
@@ -271,6 +270,10 @@ int IOServer::listen_and_accept(int max_connections) {
     }
 
     // end program
+
+    for (int i = 0; i < thread_count; ++i) {
+        PostQueuedCompletionStatus(iocp, 0, 0, nullptr); // nullptr context = exit signal
+    }
 
     WSACleanup();
     return 1;
@@ -288,11 +291,40 @@ DWORD WINAPI IOServer::worker_thread(LPVOID lpParam) {
 
     IOServerHelper helper(&server->chat_rooms, server->crooms_mutex);
 
-    while (GetQueuedCompletionStatus(server->iocp, &bytes_recieved, &key, (LPOVERLAPPED *)&context, INFINITE)) {
+    while (true) {
+
+        BOOL ok = GetQueuedCompletionStatus(server->iocp, &bytes_recieved, &key, (LPOVERLAPPED*)&context, INFINITE);
+
+        if (!ok) {
+            DWORD err = WSAGetLastError();
+            if (err == SOCKET_ERROR || err == 64) {
+                Logger::get().log(LogLevel::INFO, LogModule::SERVER, "Client Terminated Connection");
+                server->connected--;
+                if (context->room) {
+                    context->room->reduce_count();
+                    context->room.reset();
+                }
+                closesocket(context->client);
+                delete[] context->transfer_data;
+                delete context;
+            }
+            Logger::get().log(LogLevel::ERR, LogModule::NETWORK, "GQCS Failed with Error", WSAGetLastError());
+            continue;
+        }
+
+        if (context == nullptr) {
+            // Exit signal
+            Logger::get().log(LogLevel::INFO, LogModule::SERVER, "Worker Thread Exited");
+            break;
+        }
 
         if (bytes_recieved == 0) {
-            // handle leaving, send client message for leaving
-            std::cout << "Client disconnected\n";
+            Logger::get().log(LogLevel::INFO, LogModule::SERVER, "Client Disconnected");
+            server->connected--;
+            if (context->room) {
+                context->room->reduce_count();
+                context->room.reset();
+            }
             closesocket(context->client);
             delete[] context->transfer_data;
             delete context;
@@ -314,6 +346,7 @@ DWORD WINAPI IOServer::worker_thread(LPVOID lpParam) {
                 continue;
             }
             helper.handle_read(context);
+
             break;
         case IOCP_CLIENT_CONTEXT::WRITE:
             context->expected_bytes -= bytes_recieved;
@@ -331,9 +364,6 @@ DWORD WINAPI IOServer::worker_thread(LPVOID lpParam) {
             helper.handle_write(context);
             break;
         }
-        // define what to do for writes;
     }
-
-    std::cout << "thread exited" << std::endl;
     return 0;
 }

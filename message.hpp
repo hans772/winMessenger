@@ -21,7 +21,8 @@ enum MessageType {
 	DISCONNECT,
 	CLIENT_COMMAND,
 	CLIENT_JOIN_ROOM,
-	CLIENT_LEAVE_ROOM
+	CLIENT_LEAVE_ROOM,
+	CLIENT_SETUP
 };
 
 static const std::map<std::string, const int> MESSAGE_TYPES = {

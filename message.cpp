@@ -4,7 +4,7 @@
 #include <string>
 #include <regex>
 #include <cstring>
-
+#include "logger.hpp"
 #include "message.hpp"
 
 using namespace std;
@@ -225,7 +225,6 @@ void Message::set_body_from_buffer(int type, char* bodybuf, int body_length) {
 		body_s.assign(bodybuf, bodybuf + body_length);
 		json body_js = json::parse(body_s);
 		set_body_json(body_js);
-		std::cout << body_js.dump() << std::endl;
 		break;
 	}
 	}
@@ -255,7 +254,8 @@ int Message::send_message(SOCKET socket) {
 	do {
 		sd = send(socket, headlenbuf, rem, 0);
 		if (sd <= 0) {
-			cout << "Error sending headerlen to socket: " << WSAGetLastError() << endl;
+			Logger::get().log(LogLevel::ERR, LogModule::MESSAGE, "Error Sending Header to Socket");
+
 			return -1;
 		}
 		else {
@@ -275,7 +275,8 @@ int Message::send_message(SOCKET socket) {
 	do {
 		sd = send(socket, p, rem, 0);
 		if (sd <= 0) {
-			cout << "Error sending header to socket: " << WSAGetLastError() << endl;
+			Logger::get().log(LogLevel::ERR, LogModule::MESSAGE, "Error Sending HeaderJSON to Socket");
+
 
 			// Memory management.
 
@@ -314,7 +315,8 @@ int Message::send_message(SOCKET socket) {
 		memcpy(bodybuf, body_json.dump().c_str(), headerjson["body_length"].get<int>() + 1);
 		break;
 	default:
-		cout << "Unknown body type" << endl;
+		Logger::get().log(LogLevel::ERR, LogModule::MESSAGE, "Unknown Body Type Provided");
+
 		return -1;
 	}
 
@@ -323,7 +325,8 @@ int Message::send_message(SOCKET socket) {
 	do {
 		sd = send(socket, p, rem, 0);
 		if (sd <= 0) {
-			cout << "Error sending body to socket: " << WSAGetLastError() << endl;
+			Logger::get().log(LogLevel::ERR, LogModule::MESSAGE, "Error Sending Body to Socket");
+
 			delete[] bodybuf;
 			return -1;
 		}

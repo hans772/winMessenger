@@ -2,6 +2,7 @@
 #include "io_server_helper.hpp"
 #include <string>
 #include <sstream>
+#include "logger.hpp"
 
 IOCP_CLIENT_CONTEXT* IOServerHelper::create_new_context(
     IOCP_CLIENT_CONTEXT::Operation oper,
@@ -95,6 +96,7 @@ void IOServerHelper::handle_read(IOCP_CLIENT_CONTEXT* context) {
     }
 
     DWORD flags = 0;
+    if(context->client )
     WSARecv(context->client, &(context->buffer), 1, nullptr, &flags, &(context->overlapped), nullptr);
 
 }
@@ -131,7 +133,7 @@ void IOServerHelper::handle_write(IOCP_CLIENT_CONTEXT* context) {
             memcpy(context->transfer_data, context->transfer_message->get_body_json().dump().c_str(), context->expected_bytes);
             break;
         default:
-            std::cout << "Unknown body type" << std::endl;
+            Logger::get().log(LogLevel::ERR, LogModule::SERVER, "Invalid Body Type for Message Provided");
             return;
         }
 
@@ -156,18 +158,20 @@ void IOServerHelper::handle_message(IOCP_CLIENT_CONTEXT * context) {
 
     switch (context->transfer_message->get_type()) {
     case (int)MessageType::CLIENT_JOIN: {
-        std::cout << context->transfer_message->get_body_type() << std::endl;
 
         context->name = context->transfer_message->get_body_json()["name"].get<std::string>();
         std::string room_name = context->transfer_message->get_body_json()["room"].get<std::string>();
+
+        nlohmann::json client_setup;
+        client_setup["username"] = context->name;
 
         //if chatroom already exists, member is added to that chatroom;
         bool found = false;
         for (int i = 0; i < server_rooms->size(); i++) {
             if ((*server_rooms)[i]->name == room_name) {
                 context->room = (*server_rooms)[i];
-                (*server_rooms)[i]->add_member(context->client);
-
+                context->room->add_member(context->client);
+                context->room->add_count();
                 found = true;
 
                 break;
@@ -180,12 +184,31 @@ void IOServerHelper::handle_message(IOCP_CLIENT_CONTEXT * context) {
             std::shared_ptr<ChatRoom> new_room = std::make_shared<ChatRoom>(room_name);
             server_rooms->push_back(new_room);
             context->room = new_room;
+            context->room->add_count();
             new_room->add_member(context->client);
 
         }
-        broadcast(context, *(context->transfer_message));
+        Message info(CLIENT_JOIN);
+        info.set_body_string(context->name);
+        broadcast(context, info);
+
+
+        IOCP_CLIENT_CONTEXT* wctx = IOServerHelper::create_new_context(
+            IOCP_CLIENT_CONTEXT::WRITE,
+            IOCP_CLIENT_CONTEXT::HEAD,
+            context->client,
+            new Message(CLIENT_SETUP)
+        );
+        wctx->transfer_message->set_body_json(client_setup);
+
+        IOServerHelper::set_context_for_message(wctx);
+        WSASend(context->client, &wctx->buffer, 1, nullptr, 0, &wctx->overlapped, nullptr);
+
+        break;
     }
     case MessageType::CLIENT_TEXT_MESSAGE:
+
+        context->transfer_message->set_sender(context->name);
 
         // on recieving a text message from client, message is broadcasted to every other client.
         std::cout << context->transfer_message->get_sender() << ": " << context->transfer_message->get_body_str() << '\n';
@@ -197,10 +220,8 @@ void IOServerHelper::handle_message(IOCP_CLIENT_CONTEXT * context) {
     {
         nlohmann::json cmd_jsn = context->transfer_message->get_body_json();
 
-        std::cout << "recieved command: " << cmd_jsn["command"].get<std::string>() << " from " << context->name << " with args: \n";
-        for (std::string arg : cmd_jsn["arguments"].get<std::vector<std::string>>()) {
-            std::cout << arg << '\n';
-        }
+        Logger::get().log(LogLevel::INFO, LogModule::SERVER, "Recieved Command: ", cmd_jsn["command"].get<std::string>(), " From " , context->name);
+
         handle_command(cmd_jsn, context);
 
         break;
@@ -209,9 +230,11 @@ void IOServerHelper::handle_message(IOCP_CLIENT_CONTEXT * context) {
     {
 
         // On disconnect, disconnect message is sent to client, to cleanly disconnect from server.
-        Message* disc = new Message(CLIENT_LEAVE);
+        Message* disc = new Message(DISCONNECT);
         disc->set_body_string("Client Request");
-        std::cout << context->name << " Disconnected." << std::endl;
+        
+        Logger::get().log(LogLevel::INFO, LogModule::SERVER, context->name, " Disconnected");
+
         IOCP_CLIENT_CONTEXT* wctx = IOServerHelper::create_new_context(
             IOCP_CLIENT_CONTEXT::WRITE,
             IOCP_CLIENT_CONTEXT::HEAD,
@@ -226,13 +249,11 @@ void IOServerHelper::handle_message(IOCP_CLIENT_CONTEXT * context) {
     {
 
         Message info;
-        if (context->transfer_message->get_type() == MessageType::ERRORMSG) std::cout << "Error in client socket: " << context->name << std::endl;
-        context->room->remove_member(context->client);
+        if (context->transfer_message->get_type() == MessageType::ERRORMSG) Logger::get().log(LogLevel::ERR, LogModule::NETWORK, "Error in Client Socket");
         info.set_type(CLIENT_LEAVE);
-
-        context->room.reset();
-
+        info.set_body_string(context->name);
         broadcast(context, info);
+        context->room->remove_member(context->client);
         break;
     }
     }
@@ -257,6 +278,8 @@ void IOServerHelper::handle_command(nlohmann::json cmd_jsn, IOCP_CLIENT_CONTEXT 
                 context->client,
                 info
             );
+
+            IOServerHelper::set_context_for_message(wctx);
             WSASend(context->client, &wctx->buffer, 1, nullptr, 0, &wctx->overlapped, nullptr);
             return;
         }
@@ -301,6 +324,8 @@ void IOServerHelper::handle_command(nlohmann::json cmd_jsn, IOCP_CLIENT_CONTEXT 
                 context->client,
                 new Message(info)
             );
+            IOServerHelper::set_context_for_message(wctx);
+
             WSASend(context->client, &wctx->buffer, 1, nullptr, 0, &wctx->overlapped, nullptr);
         }
     }
