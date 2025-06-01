@@ -8,7 +8,8 @@
 #include "io_server_helper.hpp"
 #include <MSWSock.h>
 #include <Windows.h>
-#include "mutex"
+#include <mutex>
+#include "auth.hpp"
 
 class Server
 {
@@ -20,6 +21,7 @@ public:
 	int check(int result, std::string oper);
 
 	addrinfo hints;
+	ServerAuth auth;
 protected:
 	SOCKET _listen_socket;
 };

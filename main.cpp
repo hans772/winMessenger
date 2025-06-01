@@ -152,7 +152,7 @@ int main()
 
         // Initializes client and connects to given IP and port.
 
-        if (client.create_tcp_socket(selectedoptions["IP_ADDRESS"].c_str(), selectedoptions["PORT"].c_str())) {
+        if (client.create_tcp_socket(selectedoptions["IP_ADDRESS"].c_str(), selectedoptions["PORT"].c_str(), selectedoptions["IP_ADDRESS"])) {
             client.start_chat();
         }
     }

@@ -11,7 +11,7 @@
 
 using namespace std;
 
-Server::Server() { connected = 0; }
+Server::Server() { connected = 0;}
 ThreadedServer::ThreadedServer(){}
 IOServer::IOServer() {
     crooms_mutex = std::make_shared<std::mutex>();
@@ -345,7 +345,7 @@ DWORD WINAPI IOServer::worker_thread(LPVOID lpParam) {
 
                 continue;
             }
-            helper.handle_read(context);
+            helper.handle_read(context, server->auth);
 
             break;
         case IOCP_CLIENT_CONTEXT::WRITE:

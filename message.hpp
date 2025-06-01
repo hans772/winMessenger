@@ -22,7 +22,9 @@ enum MessageType {
 	CLIENT_COMMAND,
 	CLIENT_JOIN_ROOM,
 	CLIENT_LEAVE_ROOM,
-	CLIENT_SETUP
+	CLIENT_SETUP,
+	CLIENT_INVALID_USERNAME,
+	CLIENT_INVALID_TOKEN
 };
 
 static const std::map<std::string, const int> MESSAGE_TYPES = {

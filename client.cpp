@@ -15,7 +15,7 @@
 using namespace std;
 std::mutex console_mutex;
 
-Client::Client() {   }
+Client::Client() { auth = ClientAuth(); }
 
 int Client::check(int result, string oper) {
     // checking for WSAerrors
@@ -27,7 +27,7 @@ int Client::check(int result, string oper) {
     return 1;
 }
 
-int Client::create_tcp_socket(const char* ip, const char* port) {
+int Client::create_tcp_socket(const char* ip, const char* port, std::string ip_str) {
 
     /*
     This function sets up the socket for recieving connections from client.
@@ -85,7 +85,7 @@ int Client::create_tcp_socket(const char* ip, const char* port) {
         }
 
         Logger::get().log(LogLevel::INFO, LogModule::CLIENT, "Connected to Server on Port: ", port);
-
+        connected_ip = ip_str;
         break;
     }
 
@@ -98,20 +98,27 @@ int Client::create_tcp_socket(const char* ip, const char* port) {
 }
 
 int ThreadedClient::start_chat() {
-    string name;
-    std::cout << "Enter your name: ";
-    cin >> name;
 
+    nlohmann::json body;
+
+    if (auth.check_token(connected_ip)) {
+        body["tok"] = auth.get_token(connected_ip);
+    }
+    else {
+        string name;
+        std::cout << "Enter your name: ";
+        cin >> name;
+        body["name"] = name;
+
+    }
+    
     string room;
     std::cout << "Enter the room you wish to join: ";
     cin >> room;
 
-    std::cout << "\nCHATROOM: " << room << "\n" << endl;
-    // creating a join message to send to server as initial message
-
-    nlohmann::json body;
-    body["name"] = name;
     body["room"] = room;
+
+    // creating a join message to send to server as initial message
 
     Message msg = Message(CLIENT_JOIN);
     msg.set_body_json(body);
@@ -130,7 +137,7 @@ int ThreadedClient::start_chat() {
 
 }
 
-ThreadedClient::ThreadedClient() {}
+ThreadedClient::ThreadedClient() { input_waiting = 0; }
 
 int ThreadedClient::_listen_thread(SOCKET server) {
     _connected = 1;
@@ -147,8 +154,35 @@ int ThreadedClient::_listen_thread(SOCKET server) {
 
         switch (recieved.get_type()) {
         case CLIENT_SETUP:
-            std::cout << "\nW E L C O M E    :    " << recieved.get_body_json()["username"].get<std::string>() << "\n\n";
+            std::cout << "\nWELCOME    :    " << recieved.get_body_json()["username"] << "\n\n";
+            joined_room = recieved.get_body_json()["room"];
+            std::cout << "CHATROOM: " << joined_room << "\n" << endl;
+
+            if (recieved.get_body_json().contains("tok")) {
+                auth.set_token(recieved.get_body_json()["tok"].get<std::string>(), connected_ip);
+            }
             break;
+
+        case CLIENT_INVALID_USERNAME: {
+            input_waiting = 1;
+            std::cout << "That username already exists, please select another one:";
+            std::string name;
+            std::cin >> name;
+            nlohmann::json body;
+            body["name"] = name;
+            body["room"] = joined_room;
+
+            Message msg = Message(CLIENT_JOIN);
+            msg.set_body_json(body);
+            msg.send_message(_connect_socket);
+            input_waiting = 0;
+
+            break;
+        }
+        case CLIENT_INVALID_TOKEN:
+            Logger::get().log(LogLevel::ERR, LogModule::AUTH, "Authentication Token Corrupted");
+            _connected = 0;
+
         case CLIENT_TEXT_MESSAGE:
         case SERVER_MESSAGE:
             std::cout 
@@ -218,6 +252,8 @@ int ThreadedClient::_write_thread(SOCKET server) {
     std::cout << "> ";
     while (1) {
         ch = _getch();
+
+        if (input_waiting) continue;
         
         // handling backspace key.
         if (ch == '\b') {

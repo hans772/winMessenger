@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include "logger.hpp"
+#include "auth.hpp"
 
 IOCP_CLIENT_CONTEXT* IOServerHelper::create_new_context(
     IOCP_CLIENT_CONTEXT::Operation oper,
@@ -51,7 +52,7 @@ void IOServerHelper::broadcast(IOCP_CLIENT_CONTEXT * context, Message message) {
     }
 }
 
-void IOServerHelper::handle_read(IOCP_CLIENT_CONTEXT* context) {
+void IOServerHelper::handle_read(IOCP_CLIENT_CONTEXT* context, const ServerAuth& auth) {
     switch (context->part) {
     case IOCP_CLIENT_CONTEXT::HEAD:
         context->expected_bytes = ntohl(*(int32_t*)(context->transfer_data));
@@ -78,7 +79,7 @@ void IOServerHelper::handle_read(IOCP_CLIENT_CONTEXT* context) {
         delete[] context->transfer_data;
 
 
-        handle_message(context);
+        handle_message(context, auth);
         context->transfer_data = new char[sizeof(int32_t)];
         context->buffer.buf = context->transfer_data;
         context->buffer.len = context->expected_bytes = sizeof(int32_t);
@@ -119,8 +120,7 @@ void IOServerHelper::handle_write(IOCP_CLIENT_CONTEXT* context) {
 
         context->expected_bytes = context->transfer_message->get_header()["body_length"].get<int>();
         context->transfer_data = new char[context->expected_bytes];
-
-
+        
         switch (context->transfer_message->get_header()["body_type"].get<int>()) {
         case MSGBODY_STRING:
             memcpy(context->transfer_data, context->transfer_message->get_body_str().c_str(), context->expected_bytes);
@@ -152,18 +152,62 @@ void IOServerHelper::handle_write(IOCP_CLIENT_CONTEXT* context) {
 
 }
 
-void IOServerHelper::handle_message(IOCP_CLIENT_CONTEXT * context) {
+void IOServerHelper::handle_message(IOCP_CLIENT_CONTEXT * context, const ServerAuth &auth) {
 
     std::lock_guard<std::mutex> lock(*server_mutex);
 
     switch (context->transfer_message->get_type()) {
     case (int)MessageType::CLIENT_JOIN: {
+        nlohmann::json msg_jsn = context->transfer_message->get_body_json();
+        if (msg_jsn.contains("tok")) {
+            if (auth.verify_token(msg_jsn["tok"].get<std::string>())) {
+                std::string tok = msg_jsn["tok"].get<std::string>();
+                context->name = tok.substr(0, tok.find('.'));
+            }
+            else {
+                IOCP_CLIENT_CONTEXT* wctx = IOServerHelper::create_new_context(
+                    IOCP_CLIENT_CONTEXT::WRITE,
+                    IOCP_CLIENT_CONTEXT::HEAD,
+                    context->client,
+                    new Message(CLIENT_INVALID_TOKEN)
+                );
+                wctx->transfer_message->set_body_int(401);
+                IOServerHelper::set_context_for_message(wctx);
+                WSASend(context->client, &wctx->buffer, 1, nullptr, 0, &wctx->overlapped, nullptr);
+                return;
+            }
+        }
+        else {
+            std::string name = msg_jsn["name"];
+            if (std::find(auth.active_users.begin(), auth.active_users.end(), name) == auth.active_users.end()) {
+                context->name = name;
+            }
+            else {
+                IOCP_CLIENT_CONTEXT* wctx = IOServerHelper::create_new_context(
+                    IOCP_CLIENT_CONTEXT::WRITE,
+                    IOCP_CLIENT_CONTEXT::HEAD,
+                    context->client,
+                    new Message(CLIENT_INVALID_USERNAME)
+                );
+                wctx->transfer_message->set_body_int(401);
 
-        context->name = context->transfer_message->get_body_json()["name"].get<std::string>();
+                IOServerHelper::set_context_for_message(wctx);
+                WSASend(context->client, &wctx->buffer, 1, nullptr, 0, &wctx->overlapped, nullptr);
+
+                return;
+            }
+        }
         std::string room_name = context->transfer_message->get_body_json()["room"].get<std::string>();
 
         nlohmann::json client_setup;
         client_setup["username"] = context->name;
+        client_setup["room"] = msg_jsn["room"];
+        if (!msg_jsn.contains("tok")) {
+            client_setup["tok"] = auth.get_token(context->name);
+        }
+
+        Logger::get().log(LogLevel::INFO, LogModule::SERVER, "Accepted Client: ", context->name);
+
 
         //if chatroom already exists, member is added to that chatroom;
         bool found = false;
@@ -188,6 +232,7 @@ void IOServerHelper::handle_message(IOCP_CLIENT_CONTEXT * context) {
             new_room->add_member(context->client);
 
         }
+
         Message info(CLIENT_JOIN);
         info.set_body_string(context->name);
         broadcast(context, info);

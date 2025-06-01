@@ -244,3 +244,2787 @@
 "module": "NETWORK",
 "timestamp": "2025-05-31 06:25:01"
 }
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 04:58:08"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 04:58:08"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:01:31"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:01:31"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:02:40"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:02:40"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:02:43"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:02:43"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 05:02:43"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:02:43"
+}
+{
+"level": "INFO",
+"message": "Client Terminated Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:02:43"
+}
+{
+"level": "ERROR",
+"message": "GQCS Failed with Error0",
+"module": "NETWORK",
+"timestamp": "2025-06-01 05:02:43"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:08:29"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:08:29"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:08:32"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:08:32"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 05:08:32"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:08:32"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:09:13"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:09:13"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 05:09:13"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:13"
+}
+{
+"level": "INFO",
+"message": "Closed Listen Socket",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:13"
+}
+{
+"level": "INFO",
+"message": "Client Terminated Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:35"
+}
+{
+"level": "ERROR",
+"message": "GQCS Failed with Error0",
+"module": "NETWORK",
+"timestamp": "2025-06-01 05:09:35"
+}
+{
+"level": "INFO",
+"message": "Client Terminated Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:37"
+}
+{
+"level": "ERROR",
+"message": "GQCS Failed with Error0",
+"module": "NETWORK",
+"timestamp": "2025-06-01 05:09:37"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Worker Thread Exited",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "WSACleanup Started",
+"module": "NETWORK",
+"timestamp": "2025-06-01 05:09:43"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:24:15"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:24:15"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:24:21"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:24:21"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 05:24:21"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:24:21"
+}
+{
+"level": "INFO",
+"message": "Recieved an Error Message with code: 10054",
+"module": "CLIENT",
+"timestamp": "2025-06-01 05:24:38"
+}
+{
+"level": "INFO",
+"message": "WSACleanup Started",
+"module": "NETWORK",
+"timestamp": "2025-06-01 05:24:38"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:30:20"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:30:20"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:30:24"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:30:24"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 05:30:24"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:30:24"
+}
+{
+"level": "INFO",
+"message": "Client Terminated Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:30:52"
+}
+{
+"level": "ERROR",
+"message": "GQCS Failed with Error0",
+"module": "NETWORK",
+"timestamp": "2025-06-01 05:30:52"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:33:27"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:33:27"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:33:30"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:33:30"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 05:33:30"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:33:30"
+}
+{
+"level": "ERROR",
+"message": "Invalid Body Type for Message Provided",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:33:40"
+}
+{
+"level": "INFO",
+"message": "Recieved an Error Message with code: 10054",
+"module": "CLIENT",
+"timestamp": "2025-06-01 05:33:54"
+}
+{
+"level": "INFO",
+"message": "WSACleanup Started",
+"module": "NETWORK",
+"timestamp": "2025-06-01 05:33:54"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:37:12"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:37:12"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:37:15"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:37:15"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 05:37:15"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:37:15"
+}
+{
+"level": "ERROR",
+"message": "Invalid Body Type for Message Provided",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:37:18"
+}
+{
+"level": "INFO",
+"message": "Client Terminated Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:37:25"
+}
+{
+"level": "ERROR",
+"message": "GQCS Failed with Error0",
+"module": "NETWORK",
+"timestamp": "2025-06-01 05:37:25"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:40:24"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:40:24"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:40:29"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:40:29"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 05:40:29"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:40:29"
+}
+{
+"level": "DEBUG",
+"message": "0",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:40:36"
+}
+{
+"level": "ERROR",
+"message": "Invalid Body Type for Message Provided",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:40:36"
+}
+{
+"level": "INFO",
+"message": "Client Terminated Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:40:45"
+}
+{
+"level": "ERROR",
+"message": "GQCS Failed with Error0",
+"module": "NETWORK",
+"timestamp": "2025-06-01 05:40:45"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:41:02"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:41:02"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:41:05"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:41:05"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 05:41:05"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:41:05"
+}
+{
+"level": "DEBUG",
+"message": "702",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:41:12"
+}
+{
+"level": "INFO",
+"message": "Client Terminated Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:41:27"
+}
+{
+"level": "ERROR",
+"message": "GQCS Failed with Error0",
+"module": "NETWORK",
+"timestamp": "2025-06-01 05:41:27"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:48:11"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:48:11"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:48:15"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:48:15"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 05:48:15"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:48:15"
+}
+{
+"level": "DEBUG",
+"message": "0",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:48:17"
+}
+{
+"level": "ERROR",
+"message": "Invalid Body Type for Message Provided",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:48:17"
+}
+{
+"level": "INFO",
+"message": "Client Terminated Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:48:29"
+}
+{
+"level": "ERROR",
+"message": "GQCS Failed with Error0",
+"module": "NETWORK",
+"timestamp": "2025-06-01 05:48:29"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:51:05"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:51:05"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:51:32"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:51:32"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:51:36"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:51:36"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 05:51:36"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:51:36"
+}
+{
+"level": "DEBUG",
+"message": "702",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:51:45"
+}
+{
+"level": "INFO",
+"message": "Client Terminated Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:51:51"
+}
+{
+"level": "ERROR",
+"message": "GQCS Failed with Error0",
+"module": "NETWORK",
+"timestamp": "2025-06-01 05:51:51"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:52:55"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:52:55"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:52:59"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:52:59"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 05:52:59"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:52:59"
+}
+{
+"level": "DEBUG",
+"message": "0",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:53:01"
+}
+{
+"level": "ERROR",
+"message": "Invalid Body Type for Message Provided",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:53:01"
+}
+{
+"level": "INFO",
+"message": "Client Terminated Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:53:07"
+}
+{
+"level": "ERROR",
+"message": "GQCS Failed with Error0",
+"module": "NETWORK",
+"timestamp": "2025-06-01 05:53:07"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:54:33"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:54:33"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:54:40"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:54:40"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 05:54:40"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:54:40"
+}
+{
+"level": "DEBUG",
+"message": "702",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:54:45"
+}
+{
+"level": "INFO",
+"message": "Client Terminated Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:54:46"
+}
+{
+"level": "ERROR",
+"message": "GQCS Failed with Error0",
+"module": "NETWORK",
+"timestamp": "2025-06-01 05:54:46"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:54:55"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:54:55"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:54:59"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:54:59"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 05:54:59"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:54:59"
+}
+{
+"level": "DEBUG",
+"message": "0",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:55:01"
+}
+{
+"level": "ERROR",
+"message": "Invalid Body Type for Message Provided",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:55:01"
+}
+{
+"level": "INFO",
+"message": "Client Terminated Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:55:04"
+}
+{
+"level": "ERROR",
+"message": "GQCS Failed with Error0",
+"module": "NETWORK",
+"timestamp": "2025-06-01 05:55:04"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:55:38"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:55:38"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:55:41"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:55:41"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 05:55:41"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:55:41"
+}
+{
+"level": "DEBUG",
+"message": "702",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:55:43"
+}
+{
+"level": "INFO",
+"message": "Client Terminated Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:55:56"
+}
+{
+"level": "ERROR",
+"message": "GQCS Failed with Error0",
+"module": "NETWORK",
+"timestamp": "2025-06-01 05:55:56"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:56:15"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:56:15"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:56:18"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:56:18"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 05:56:18"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:56:18"
+}
+{
+"level": "DEBUG",
+"message": "0",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:56:19"
+}
+{
+"level": "ERROR",
+"message": "Invalid Body Type for Message Provided",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:56:19"
+}
+{
+"level": "INFO",
+"message": "Client Terminated Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:56:21"
+}
+{
+"level": "ERROR",
+"message": "GQCS Failed with Error0",
+"module": "NETWORK",
+"timestamp": "2025-06-01 05:56:21"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:56:41"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:56:41"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:56:43"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:56:43"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 05:56:43"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:56:43"
+}
+{
+"level": "INFO",
+"message": "Recieved an Error Message with code: 10054",
+"module": "CLIENT",
+"timestamp": "2025-06-01 05:56:48"
+}
+{
+"level": "INFO",
+"message": "WSACleanup Started",
+"module": "NETWORK",
+"timestamp": "2025-06-01 05:56:48"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:57:11"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:57:11"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:57:13"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:57:13"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 05:57:13"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:57:13"
+}
+{
+"level": "DEBUG",
+"message": "702",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:57:15"
+}
+{
+"level": "INFO",
+"message": "Client Terminated Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:57:17"
+}
+{
+"level": "ERROR",
+"message": "GQCS Failed with Error0",
+"module": "NETWORK",
+"timestamp": "2025-06-01 05:57:17"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:59:23"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:59:23"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:59:25"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 05:59:25"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 05:59:25"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:59:25"
+}
+{
+"level": "DEBUG",
+"message": "0",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:59:26"
+}
+{
+"level": "ERROR",
+"message": "Invalid Body Type for Message Provided",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:59:26"
+}
+{
+"level": "INFO",
+"message": "Client Terminated Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 05:59:31"
+}
+{
+"level": "ERROR",
+"message": "GQCS Failed with Error0",
+"module": "NETWORK",
+"timestamp": "2025-06-01 05:59:31"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:03:42"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:03:42"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:03:45"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:03:45"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:03:45"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:03:45"
+}
+{
+"level": "DEBUG",
+"message": "701",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:03:47"
+}
+{
+"level": "ERROR",
+"message": "Authentication Token Corrupted",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:03:47"
+}
+{
+"level": "INFO",
+"message": "WSACleanup Started",
+"module": "NETWORK",
+"timestamp": "2025-06-01 06:03:47"
+}
+{
+"level": "INFO",
+"message": "Client Terminated Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:03:47"
+}
+{
+"level": "ERROR",
+"message": "GQCS Failed with Error0",
+"module": "NETWORK",
+"timestamp": "2025-06-01 06:03:47"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:04:42"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:04:42"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:04:45"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:04:45"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:04:45"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:04:45"
+}
+{
+"level": "DEBUG",
+"message": "bmlnZ2E=.xZ80xw/9NQDIzzTpQY/boXSLNtkYNXyeKr4+5uM4Qo8=",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:04:46"
+}
+{
+"level": "DEBUG",
+"message": "701",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:04:47"
+}
+{
+"level": "ERROR",
+"message": "Authentication Token Corrupted",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:04:47"
+}
+{
+"level": "INFO",
+"message": "WSACleanup Started",
+"module": "NETWORK",
+"timestamp": "2025-06-01 06:04:47"
+}
+{
+"level": "INFO",
+"message": "Client Terminated Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:04:47"
+}
+{
+"level": "ERROR",
+"message": "GQCS Failed with Error0",
+"module": "NETWORK",
+"timestamp": "2025-06-01 06:04:47"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:07:21"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:07:21"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:07:24"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:07:24"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:07:24"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:07:24"
+}
+{
+"level": "DEBUG",
+"message": "bmlnZ2E=.xZ80xw/9NQDIzzTpQY/boXSLNtkYNXyeKr4+5uM4Qo8=",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:07:25"
+}
+{
+"level": "INFO",
+"message": "Recieved an Error Message with code: 10054",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:07:29"
+}
+{
+"level": "INFO",
+"message": "WSACleanup Started",
+"module": "NETWORK",
+"timestamp": "2025-06-01 06:07:29"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:08:43"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:08:43"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:08:46"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:08:46"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:08:46"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:08:46"
+}
+{
+"level": "DEBUG",
+"message": "bmlnZ2E=.xZ80xw/9NQDIzzTpQY/boXSLNtkYNXyeKr4+5uM4Qo8=",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:08:47"
+}
+{
+"level": "INFO",
+"message": "Recieved an Error Message with code: 10054",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:08:51"
+}
+{
+"level": "INFO",
+"message": "WSACleanup Started",
+"module": "NETWORK",
+"timestamp": "2025-06-01 06:08:51"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:09:48"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:09:48"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:09:50"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:09:50"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:09:50"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:09:50"
+}
+{
+"level": "DEBUG",
+"message": "bmlnZ2E=.xZ80xw/9NQDIzzTpQY/boXSLNtkYNXyeKr4+5uM4Qo8=",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:09:51"
+}
+{
+"level": "DEBUG",
+"message": "701",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:09:51"
+}
+{
+"level": "ERROR",
+"message": "Authentication Token Corrupted",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:09:51"
+}
+{
+"level": "INFO",
+"message": "WSACleanup Started",
+"module": "NETWORK",
+"timestamp": "2025-06-01 06:09:51"
+}
+{
+"level": "INFO",
+"message": "Client Terminated Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:09:51"
+}
+{
+"level": "ERROR",
+"message": "GQCS Failed with Error0",
+"module": "NETWORK",
+"timestamp": "2025-06-01 06:09:51"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:10:33"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:10:33"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:10:35"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:10:35"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:10:35"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:10:35"
+}
+{
+"level": "INFO",
+"message": "Recieved an Error Message with code: 10054",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:10:40"
+}
+{
+"level": "INFO",
+"message": "WSACleanup Started",
+"module": "NETWORK",
+"timestamp": "2025-06-01 06:10:40"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:12:00"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:12:00"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:12:03"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:12:03"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:12:03"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:12:03"
+}
+{
+"level": "DEBUG",
+"message": "nigga",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:12:05"
+}
+{
+"level": "DEBUG",
+"message": "701",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:12:05"
+}
+{
+"level": "ERROR",
+"message": "Authentication Token Corrupted",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:12:05"
+}
+{
+"level": "INFO",
+"message": "WSACleanup Started",
+"module": "NETWORK",
+"timestamp": "2025-06-01 06:12:05"
+}
+{
+"level": "INFO",
+"message": "Client Terminated Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:12:05"
+}
+{
+"level": "ERROR",
+"message": "GQCS Failed with Error0",
+"module": "NETWORK",
+"timestamp": "2025-06-01 06:12:05"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:13:10"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:13:10"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:13:14"
+}
+{
+"level": "ERROR",
+"message": "Operation: Socket BindFailed with Code:10048",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:13:14"
+}
+{
+"level": "ERROR",
+"message": "Unable to Bind to Socket",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:13:14"
+}
+{
+"level": "INFO",
+"message": "WSACleanup Started",
+"module": "NETWORK",
+"timestamp": "2025-06-01 06:13:14"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:13:26"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:13:26"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:13:26"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:13:26"
+}
+{
+"level": "INFO",
+"message": "Recieved an Error Message with code: 10054",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:13:33"
+}
+{
+"level": "INFO",
+"message": "WSACleanup Started",
+"module": "NETWORK",
+"timestamp": "2025-06-01 06:13:33"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:13:57"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:13:57"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:14:04"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:14:04"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:14:04"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:14:04"
+}
+{
+"level": "DEBUG",
+"message": "nigga",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:14:07"
+}
+{
+"level": "DEBUG",
+"message": "701",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:14:07"
+}
+{
+"level": "ERROR",
+"message": "Authentication Token Corrupted",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:14:07"
+}
+{
+"level": "INFO",
+"message": "WSACleanup Started",
+"module": "NETWORK",
+"timestamp": "2025-06-01 06:14:07"
+}
+{
+"level": "INFO",
+"message": "Client Terminated Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:14:07"
+}
+{
+"level": "ERROR",
+"message": "GQCS Failed with Error0",
+"module": "NETWORK",
+"timestamp": "2025-06-01 06:14:07"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:20:33"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:20:33"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:20:37"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:20:37"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:20:37"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:20:37"
+}
+{
+"level": "DEBUG",
+"message": "701",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:20:38"
+}
+{
+"level": "ERROR",
+"message": "Authentication Token Corrupted",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:20:38"
+}
+{
+"level": "INFO",
+"message": "WSACleanup Started",
+"module": "NETWORK",
+"timestamp": "2025-06-01 06:20:38"
+}
+{
+"level": "INFO",
+"message": "Client Terminated Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:20:38"
+}
+{
+"level": "ERROR",
+"message": "GQCS Failed with Error0",
+"module": "NETWORK",
+"timestamp": "2025-06-01 06:20:38"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:22:01"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:22:01"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:22:04"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:22:04"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:22:04"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:22:04"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:22:57"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:22:57"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:22:59"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:22:59"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:22:59"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:22:59"
+}
+{
+"level": "INFO",
+"message": "Recieved an Error Message with code: 10054",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:23:07"
+}
+{
+"level": "INFO",
+"message": "WSACleanup Started",
+"module": "NETWORK",
+"timestamp": "2025-06-01 06:23:07"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:23:43"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:23:43"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:23:45"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:23:45"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:23:45"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:23:45"
+}
+{
+"level": "INFO",
+"message": "Recieved an Error Message with code: 10054",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:23:51"
+}
+{
+"level": "INFO",
+"message": "WSACleanup Started",
+"module": "NETWORK",
+"timestamp": "2025-06-01 06:23:51"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:24:04"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:24:04"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:24:08"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:24:08"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:24:08"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:24:08"
+}
+{
+"level": "INFO",
+"message": "Recieved an Error Message with code: 10054",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:24:14"
+}
+{
+"level": "INFO",
+"message": "WSACleanup Started",
+"module": "NETWORK",
+"timestamp": "2025-06-01 06:24:14"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:26:41"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:26:41"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:26:43"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:26:43"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:26:43"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:26:43"
+}
+{
+"level": "ERROR",
+"message": "setname",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:26:45"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:27:54"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:27:54"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:27:57"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:27:57"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:27:57"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:27:57"
+}
+{
+"level": "INFO",
+"message": "Recieved an Error Message with code: 10054",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:28:02"
+}
+{
+"level": "INFO",
+"message": "WSACleanup Started",
+"module": "NETWORK",
+"timestamp": "2025-06-01 06:28:02"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:28:31"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:28:31"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:28:33"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:28:33"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:28:33"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:28:33"
+}
+{
+"level": "ERROR",
+"message": "rokenamsw",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:28:35"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:29:57"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:29:57"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:29:59"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:29:59"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:29:59"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:29:59"
+}
+{
+"level": "ERROR",
+"message": "I24drovided",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:30:01"
+}
+{
+"level": "INFO",
+"message": "Recieved an Error Message with code: 10054",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:30:05"
+}
+{
+"level": "INFO",
+"message": "WSACleanup Started",
+"module": "NETWORK",
+"timestamp": "2025-06-01 06:30:05"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:30:57"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:30:57"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:31:01"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:31:01"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:31:01"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:31:01"
+}
+{
+"level": "INFO",
+"message": "Recieved an Error Message with code: 10054",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:31:07"
+}
+{
+"level": "INFO",
+"message": "WSACleanup Started",
+"module": "NETWORK",
+"timestamp": "2025-06-01 06:31:07"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:31:26"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:31:26"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:31:29"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:31:29"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:31:29"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:31:29"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:31:52"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:31:52"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:31:54"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:31:54"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:31:54"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:31:54"
+}
+{
+"level": "ERROR",
+"message": "Idrgdrrdided",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:31:56"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:32:22"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:32:22"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:32:24"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:32:24"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:32:24"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:32:24"
+}
+{
+"level": "INFO",
+"message": "Recieved an Error Message with code: 10054",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:32:30"
+}
+{
+"level": "INFO",
+"message": "WSACleanup Started",
+"module": "NETWORK",
+"timestamp": "2025-06-01 06:32:30"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:34:19"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:34:19"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:34:21"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:34:21"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:34:21"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:34:21"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:35:18"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:35:18"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:35:20"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:35:20"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:35:20"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:35:20"
+}
+{
+"level": "INFO",
+"message": "Recieved an Error Message with code: 10054",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:35:25"
+}
+{
+"level": "INFO",
+"message": "WSACleanup Started",
+"module": "NETWORK",
+"timestamp": "2025-06-01 06:35:25"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:35:41"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:35:41"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:35:43"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:35:43"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:35:43"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:35:43"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:36:06"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:36:06"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:36:08"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:36:08"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:36:08"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:36:08"
+}
+{
+"level": "INFO",
+"message": "Recieved an Error Message with code: 10054",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:36:15"
+}
+{
+"level": "INFO",
+"message": "WSACleanup Started",
+"module": "NETWORK",
+"timestamp": "2025-06-01 06:36:15"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:39:27"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:39:27"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:39:30"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:39:30"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:39:30"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:39:30"
+}
+{
+"level": "DEBUG",
+"message": "702",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:39:32"
+}
+{
+"level": "INFO",
+"message": "Client Terminated Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:39:47"
+}
+{
+"level": "ERROR",
+"message": "GQCS Failed with Error0",
+"module": "NETWORK",
+"timestamp": "2025-06-01 06:39:47"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:39:57"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:39:57"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:39:59"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:39:59"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:39:59"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:39:59"
+}
+{
+"level": "DEBUG",
+"message": "701",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:40:01"
+}
+{
+"level": "ERROR",
+"message": "Authentication Token Corrupted",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:40:01"
+}
+{
+"level": "INFO",
+"message": "WSACleanup Started",
+"module": "NETWORK",
+"timestamp": "2025-06-01 06:40:01"
+}
+{
+"level": "INFO",
+"message": "Client Terminated Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:40:01"
+}
+{
+"level": "ERROR",
+"message": "GQCS Failed with Error0",
+"module": "NETWORK",
+"timestamp": "2025-06-01 06:40:01"
+}
+{
+"level": "INFO",
+"message": "Created New Server Secret",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:42:07"
+}
+{
+"level": "INFO",
+"message": "Created Server on Port: 56001",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:42:07"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:42:10"
+}
+{
+"level": "INFO",
+"message": "Loaded Client Tokens",
+"module": "AUTH",
+"timestamp": "2025-06-01 06:42:10"
+}
+{
+"level": "INFO",
+"message": "Connected to Server on Port: 56001",
+"module": "CLIENT",
+"timestamp": "2025-06-01 06:42:10"
+}
+{
+"level": "INFO",
+"message": "Accepted Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:42:10"
+}
+{
+"level": "INFO",
+"message": "Accepted Client: jj",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:42:12"
+}
+{
+"level": "INFO",
+"message": "Client Terminated Connection",
+"module": "SERVER",
+"timestamp": "2025-06-01 06:42:17"
+}
+{
+"level": "ERROR",
+"message": "GQCS Failed with Error0",
+"module": "NETWORK",
+"timestamp": "2025-06-01 06:42:17"
+}

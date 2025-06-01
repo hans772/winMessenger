@@ -45,6 +45,9 @@
     <ClCompile Include="logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="auth.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="client.hpp">
@@ -65,10 +68,18 @@
     <ClInclude Include="logger.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="auth.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="clientselect.txt" />
     <Text Include="menufmt.txt" />
     <Text Include="serverselect.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="serverconfig.ini" />
+    <None Include="users.txt" />
+    <None Include="clientconfig.json" />
   </ItemGroup>
 </Project>

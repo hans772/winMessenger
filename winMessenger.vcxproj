@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="auth.cpp" />
     <ClCompile Include="client.cpp" />
     <ClCompile Include="io_server_helper.cpp" />
     <ClCompile Include="logger.cpp" />
@@ -141,6 +142,7 @@
     <ClCompile Include="server_client.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="auth.hpp" />
     <ClInclude Include="io_server_helper.hpp" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="client.hpp" />
@@ -154,6 +156,11 @@
     <Text Include="clientselect.txt" />
     <Text Include="menufmt.txt" />
     <Text Include="serverselect.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="clientconfig.json" />
+    <None Include="serverconfig.ini" />
+    <None Include="users.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
