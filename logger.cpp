@@ -5,7 +5,7 @@
 #include <chrono>
 #include <iomanip>
 
-Logger::Logger() {
+Logger::Logger() { // keeps the json file open
 	json_stream.open("log.json", std::ios::app);
     active_modules = { LogModule::AUTH,LogModule::MESSAGE,LogModule::CLIENT,LogModule::SERVER,LogModule::NETWORK };
     if (!json_stream.is_open()) {
@@ -64,6 +64,8 @@ void Logger::enable_module(LogModule mod) {
 void Logger::disable_module(LogModule mod) {
     active_modules.erase(mod);
 }
+
+// sends a formatted message into the json file and stdout
 
 void Logger::logi(LogLevel lvl, LogModule mod, const std::string& str) {
     if ((lvl < m_log_level) || (active_modules.find(mod) == active_modules.end())) return;

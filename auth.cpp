@@ -1,13 +1,18 @@
 #include "auth.hpp"
 #include "random"
-#include "openssl/bio.h"
+#include <openssl/bio.h>
 #include <openssl/evp.h>
 #include <openssl/buffer.h>
 #include <openssl/hmac.h>
 #include <iostream>
 
 ServerAuth::ServerAuth() {
-	users_f = std::fstream("users.txt");
+	/*
+	On initializing a server, it creates an Auth which loads previous users 
+	it also loads the server secret, if not found, a new secret is generated.
+	*/
+
+	std::ifstream users_f = std::ifstream("users.txt");
 	if (!users_f) {
 		Logger::get().log(LogLevel::ERR, LogModule::AUTH, "Could Not Load Users File");
 		return;
@@ -17,39 +22,51 @@ ServerAuth::ServerAuth() {
 		active_users.push_back(user);
 	}
 
-	std::fstream fs("serverconfig.ini", (std::ios::in | std::ios::out | std::ios::app));
+	std::fstream fs("serverconfig.ini", std::ios::in); // file stream to load server secret
 	if (!fs) {
 		Logger::get().log(LogLevel::ERR, LogModule::AUTH, "Could Not Load Server Secret");
 		return;
 
 	}
 	std::string line;
-	while (std::getline(fs, line)) {
+	while (std::getline(fs, line)) { // checks every line in the serverconfig folder for SERVER_SECRET=...
 		if (line.find("SERVER_SECRET") != std::string::npos) {
 			secret = std::string(std::find(line.begin(), line.end(), '=')+1, line.end());
 			break;
 		}
 	}
+	// this allows for future compatibility, other config options can be added
+
+	fs.close();
+
+	// generates a secret of length 32
+
 	if (!secret.length()) {
 		const char usable[] = "0123456789" "qwertyuiopasdfghjklzxcvbnm" "QWERTYUIOPASDFGHJKLZXCVBNM";
 		std::random_device rd;
 		std::mt19937 generator(rd());
-		std::uniform_int_distribution<> distr(0, sizeof(usable) - 2); //-2 cuz ignoring \n
+		std::uniform_int_distribution<> distr(0, sizeof(usable) - 2); //-2 cuz ignoring \0
+
+		std::ofstream ofs("serverconfig.ini", std::ios::app);
 
 		for (int i = 0; i < 32; i++) secret += usable[distr(generator)];
 
-		Logger::get().log(LogLevel::INFO, LogModule::AUTH, "Created New Server Secret");
+		Logger::get().log(LogLevel::INFO, LogModule::AUTH, "Created New Server Secret: ", secret);
 		std::string wline = "SERVER_SECRET=" + secret + "\n";
-		fs.write(wline.c_str(), wline.length());
-		fs.flush();
+		ofs.write(wline.c_str(), wline.length());
+		ofs.close();
 	}
-
-	fs.close();
 }
+
+// returns a signed token, its the signed form of the username with the server key
+// this allows for verification of the token, to check if it has been tampered with or not.
+
 std::string ServerAuth::get_token(const std::string &username) const {
-	std::string signature = hmac_sha256(secret, username);
+	std::string signature = hmac_sha256(secret, username); 
 	return username + "." + base64_enc(signature);
 }
+
+// verifies the recieved token, it reverses the operations done on it and checks if the username decoded returns the same value as the sign
 
 int ServerAuth::verify_token(const std::string& token) const {
 
@@ -62,6 +79,9 @@ int ServerAuth::verify_token(const std::string& token) const {
 	if (sign == hmac_sha256(secret, usn)) return 1;
 	else return 0;
 }
+
+// encoding and decoding in base64, hmac sha256 returns values in binary which cannot be sent over sockets or stored in json
+// hence we encode it to base64
 
 std::string ServerAuth::base64_enc(const std::string &value) const {
 	BIO* encoder = BIO_new(BIO_f_base64());
@@ -102,6 +122,8 @@ std::string ServerAuth::base64_dec(const std::string& input) const {
 	return std::string(buffer, decoded_len);
 }
 
+// hmac sha256 signing
+
 std::string ServerAuth::hmac_sha256(const std::string& key, const std::string& data) const {
 	unsigned int len = EVP_MAX_MD_SIZE;
 	unsigned char hash[EVP_MAX_MD_SIZE];
@@ -115,11 +137,31 @@ std::string ServerAuth::hmac_sha256(const std::string& key, const std::string& d
 	return std::string(reinterpret_cast<char*>(hash), len);  // raw binary
 }
 
+// adds a user to the file and the vector
+
 void ServerAuth::add_user(std::string username) {
+	std::lock_guard<std::mutex> lock(users_mutex);
+
 	active_users.push_back(username);
 
+	std::ofstream users_f = std::ofstream("users.txt", std::ios::app);
+	if (!users_f) {
+		Logger::get().log(LogLevel::ERR, LogModule::AUTH, "Could Not Load Users File");
+		return;
+	}
+	users_f.write((username + '\n').c_str(), username.length() + 1);
 }
 
+//checks if a user is already registered
+
+int ServerAuth::check_user(std::string username) {
+	std::lock_guard<std::mutex> lock(users_mutex);
+
+	return std::find(active_users.begin(), active_users.end(), username) != active_users.end();
+}
+
+
+// client auth does not need a mutex as it is handled by a single thread
 
 ClientAuth::ClientAuth() {
 	std::fstream fs("clientconfig.json", std::ios::in);
@@ -134,11 +176,13 @@ ClientAuth::ClientAuth() {
 	fs.close();
 }
 
+// get username registered to an IP
 std::string ClientAuth::get_username(const std::string &ip) {
 	std::string token = tokens[ip].get<std::string>();
 	return token.substr(0, token.find('.'));
 }
 
+// get token, check token and set token registered to an IP
 std::string ClientAuth::get_token(const std::string& ip) {
 	return tokens[ip].get<std::string>();
 }

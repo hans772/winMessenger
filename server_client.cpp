@@ -117,6 +117,9 @@ void ServerClient::client_thread() {
 }
 
 void ServerClient::handle_command(nlohmann::json cmd_jsn) {
+
+    // handles command, similar to io server command handling, check io_server_helper.cpp
+
     std::string command = cmd_jsn["command"].get<std::string>();
     if (command == "subroom") {
         if (!cmd_jsn["arg_num"].get<int>()) {

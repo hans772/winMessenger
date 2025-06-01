@@ -30,7 +30,7 @@ public:
 
 	int start_chat();
 private:
-	int input_waiting;
+	int client_verified;
 
 	void _restore_client_input();
 	void _clear_console_line();

@@ -21,7 +21,7 @@ public:
 	int check(int result, std::string oper);
 
 	addrinfo hints;
-	ServerAuth auth;
+	std::shared_ptr < ServerAuth > auth;
 protected:
 	SOCKET _listen_socket;
 };
@@ -31,6 +31,7 @@ class ThreadedServer : public Server
 public:
 	ThreadedServer();
 	int listen_and_accept(int max_connections);
+	std::string validate_join(nlohmann::json join_data, SOCKET new_client);
 private:
 	std::vector<std::shared_ptr<ChatRoom>> chat_rooms;
 };

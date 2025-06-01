@@ -11,7 +11,7 @@
 
 using namespace std;
 
-Server::Server() { connected = 0;}
+Server::Server() { connected = 0; auth = std::make_shared<ServerAuth>(); }
 ThreadedServer::ThreadedServer(){}
 IOServer::IOServer() {
     crooms_mutex = std::make_shared<std::mutex>();
@@ -96,6 +96,38 @@ int Server::create_tcp_socket(const char *port) {
     return 1;
 }
 
+// validates token, same method as event server (check below), except this is threaded
+
+std::string ThreadedServer::validate_join(nlohmann::json join_data, SOCKET new_client) { 
+    if (join_data.contains("tok")) {
+        if (auth->verify_token(join_data["tok"].get<std::string>())) {
+            std::string tok = join_data["tok"].get<std::string>();
+            return tok.substr(0, tok.find('.'));
+        }
+        else {
+            Message errmsg = Message(CLIENT_INVALID_TOKEN);
+            errmsg.set_body_int(401);
+            errmsg.send_message(new_client);
+
+            return "";
+        }
+    }
+    else {
+        std::string name = join_data["name"];
+        if (!(auth->check_user(name))) {
+            auth->add_user(name);
+            return name;
+        }
+        else {
+            Message errmsg = Message(CLIENT_INVALID_USERNAME);
+            errmsg.set_body_string(join_data["room"]);
+
+            errmsg.send_message(new_client);
+
+            return validate_join(Message::recieve_message(new_client).get_body_json(), new_client);
+        }
+    }
+}
 int ThreadedServer::listen_and_accept(int max_connections) {
 
     /*
@@ -120,9 +152,24 @@ int ThreadedServer::listen_and_accept(int max_connections) {
             //recieves name and chat room from client
 
             nlohmann::json join_data = Message::recieve_message(new_client).get_body_json();
-            std::string client_name = join_data["name"].get<std::string>();
+            std::string client_name;
             std::string room_name = join_data["room"].get<std::string>();
-            connected++;
+            // validates the join and only then accepts, if returned name is empty, ie invalid token, then accept is skipped
+            if ((client_name = validate_join(join_data, new_client)).length()) {
+                connected++;
+
+                Message setupmsg = Message(CLIENT_SETUP);
+                nlohmann::json setupjson;
+                setupjson["username"] = client_name;
+                setupjson["room"] = join_data["room"];
+                if (!join_data.contains("token")) setupjson["token"] = auth->get_token(client_name);
+
+                setupmsg.set_body_json(setupjson);
+                setupmsg.send_message(new_client);
+            }
+            else {
+                continue;
+            }
 
             //if chatroom already exists, member is added to that chatroom;
             bool found = false;
@@ -204,7 +251,7 @@ int IOServer::listen_and_accept(int max_connections) {
     iocp = CreateIoCompletionPort(INVALID_HANDLE_VALUE, nullptr, 0, 0);
     SYSTEM_INFO sysinfo;
     GetSystemInfo(&sysinfo);
-    int thread_count = sysinfo.dwNumberOfProcessors * 2;
+    int thread_count = sysinfo.dwNumberOfProcessors * 2; // creates a number of threads (number of processors x 2 )
     for (int i = 0; i < thread_count; ++i)
         CreateThread(nullptr, 0, IOServer::worker_thread, this, 0, nullptr);
 
@@ -217,12 +264,14 @@ int IOServer::listen_and_accept(int max_connections) {
         if (new_client == INVALID_SOCKET) Logger::get().log(LogLevel::ERR, LogModule::NETWORK, "Accept Failed with Error: " , WSAGetLastError());
         else {
 
+            // creates a read context, this will be reused for the same client
             IOCP_CLIENT_CONTEXT* ctx = IOServerHelper::create_new_context(
                 IOCP_CLIENT_CONTEXT::READ, 
                 IOCP_CLIENT_CONTEXT::HEAD, 
                 new_client, 
                 new Message());
-            
+
+            // tells the computer to check for reads and writes to and from this socket and on completion, send to worker thread
             HANDLE assoc = CreateIoCompletionPort((HANDLE)new_client, iocp, 0, 0);
             if (!assoc) {
                 Logger::get().log(LogLevel::ERR, LogModule::SERVER, "CICP Failed");
@@ -234,6 +283,7 @@ int IOServer::listen_and_accept(int max_connections) {
             connected++;
             Logger::get().log(LogLevel::INFO, LogModule::SERVER, "Accepted Connection");
             DWORD flags = 0;
+            // sends first read, creates a chain of reads until terminated
             int result = WSARecv(new_client, &(ctx->buffer), 1, nullptr, &flags, &(ctx->overlapped), nullptr);
             if (result == SOCKET_ERROR) {
                 int err = WSAGetLastError();
@@ -288,13 +338,13 @@ DWORD WINAPI IOServer::worker_thread(LPVOID lpParam) {
     ULONG_PTR key;
     IOCP_CLIENT_CONTEXT* context;
 
-
-    IOServerHelper helper(&server->chat_rooms, server->crooms_mutex);
+    // initializes a helper
+    IOServerHelper helper(&server->chat_rooms, server->crooms_mutex, server->auth);
 
     while (true) {
 
         BOOL ok = GetQueuedCompletionStatus(server->iocp, &bytes_recieved, &key, (LPOVERLAPPED*)&context, INFINITE);
-
+        // if ok is false it means something went wrong
         if (!ok) {
             DWORD err = WSAGetLastError();
             if (err == SOCKET_ERROR || err == 64) {
@@ -309,15 +359,16 @@ DWORD WINAPI IOServer::worker_thread(LPVOID lpParam) {
                 delete context;
             }
             Logger::get().log(LogLevel::ERR, LogModule::NETWORK, "GQCS Failed with Error", WSAGetLastError());
+            // making sure that thread doesnt end due to errors, otherwise server will shut down for forceful client disconnects.. etc
             continue;
         }
 
-        if (context == nullptr) {
-            // Exit signal
+        if (context == nullptr) { // this is the exit signal sent by the server main thread, to indicate that the server has closed
             Logger::get().log(LogLevel::INFO, LogModule::SERVER, "Worker Thread Exited");
             break;
         }
 
+        // if bytes recieved is 0, client has disconnected
         if (bytes_recieved == 0) {
             Logger::get().log(LogLevel::INFO, LogModule::SERVER, "Client Disconnected");
             server->connected--;
@@ -336,6 +387,8 @@ DWORD WINAPI IOServer::worker_thread(LPVOID lpParam) {
             context->expected_bytes -= bytes_recieved;
             context->recieved_bytes += bytes_recieved;
 
+            // for each section, a specific number of bytes is expected, if all those bytes are not recieved at once
+            // the worker thread asks the server to recieve the remaining bytes and then only handles the read;
             if (context->expected_bytes) {
                 context->buffer.buf = context->transfer_data + bytes_recieved;
                 context->buffer.len = context->expected_bytes;
@@ -345,12 +398,14 @@ DWORD WINAPI IOServer::worker_thread(LPVOID lpParam) {
 
                 continue;
             }
-            helper.handle_read(context, server->auth);
+            helper.handle_read(context);
 
             break;
         case IOCP_CLIENT_CONTEXT::WRITE:
             context->expected_bytes -= bytes_recieved;
             context->recieved_bytes += bytes_recieved;
+
+            // same for writing
 
             if (context->expected_bytes) {
                 context->buffer.buf += bytes_recieved;

@@ -27,16 +27,6 @@ enum MessageType {
 	CLIENT_INVALID_TOKEN
 };
 
-static const std::map<std::string, const int> MESSAGE_TYPES = {
-	{"client_join" , CLIENT_JOIN},
-	{"client_leave", CLIENT_LEAVE},
-	{"client_textmsg", CLIENT_TEXT_MESSAGE},
-	{"server_message", SERVER_MESSAGE},
-	{"error", ERRORMSG},
-	{"disconnect", DISCONNECT},
-	{"client_command", CLIENT_COMMAND}
-};
-
 
 class Message {
 

@@ -30,21 +30,21 @@ std::string get_option(std::string menu, std::pair<std::string, std::vector<std:
     int selected = 0;
 
     while (1) {
-        system("cls");
-        std::cout << menu;
-        std::cout << option.first << ":\n";
-        for (int i = 0; i < option.second.size(); i++) {
+        system("cls"); // clears the console to redraw
+        std::cout << menu; // prints the menu until now
+        std::cout << option.first << ":\n"; // prints the current focussed option
+        for (int i = 0; i < option.second.size(); i++) { // loops thru every option and prints an arroiw next to the one thats currenty selected
             std::cout << option.second[i];
             if (i == selected) std::cout << "  <<<\n";
             else std::cout << '\n';
         }
 
         int ch = getch();
-        if (ch == 72 || ch == 80) {
+        if (ch == 72 || ch == 80) { // up arrow / down arrow increments / decrements selected option
             if (ch == 72) selected = ((--selected)%option.second.size()); // Up
             else selected = ((++selected)%option.second.size()) ; // Down
         }
-        else if (ch == 13) { // Enter
+        else if (ch == 13) { // Enter stores the selected option and the option 
             if (*(option.second[selected].end() - 1) == '*') {
                 std::string value;
                 std::cout << "Enter value: ";
@@ -56,6 +56,13 @@ std::string get_option(std::string menu, std::pair<std::string, std::vector<std:
         }
     }
 }
+
+// menu is stores in a format
+// every line is printed and added to a buffer
+// if a line starts with $ it indicates a paramter, and the number in the {n} determines the number of arguments
+// the next n lines are read and added to the options, then an option is made to be selected
+// the parameter and the selected option is added to the buffer and moves on to the next option until the end of the file.
+// buffer can be redrawn when required (option change)
 
 static void modify_menu(std::ifstream &menufmt, std::string &MENU, std::map<std::string, std::string>&selectedoptions) {
     std::string temp;
@@ -134,7 +141,7 @@ int main()
 
         ThreadedServer server = ThreadedServer();
 
-        // Initializes server and starts listening for incoming connections.
+        // Initializes threaded server and starts listening for incoming connections.
 
         if (server.create_tcp_socket(selectedoptions["PORT"].c_str())) {
             server.listen_and_accept(std::stoi(selectedoptions["CLIENTS"]));
@@ -142,6 +149,8 @@ int main()
     }
     else if (selectedoptions["START"] == "IO Server") {
         IOServer server = IOServer();
+
+        // initializes event based server and listens for incoming connections.
 
         if (server.create_tcp_socket(selectedoptions["PORT"].c_str())) {
             server.listen_and_accept(std::stoi(selectedoptions["CLIENTS"]));

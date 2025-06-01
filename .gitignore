@@ -361,3 +361,10 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+winMessenger/
+winMessengerSetup/
+
+winMessenger.sln
+winMessenger.vcxproj
+winMessenger.vcxproj.filters

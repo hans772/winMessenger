@@ -100,18 +100,19 @@ int Client::create_tcp_socket(const char* ip, const char* port, std::string ip_s
 int ThreadedClient::start_chat() {
 
     nlohmann::json body;
-
+    // checks if a token already exists for the connected ip
     if (auth.check_token(connected_ip)) {
         body["tok"] = auth.get_token(connected_ip);
     }
-    else {
+    else { // otherwise asks for name
         string name;
         std::cout << "Enter your name: ";
         cin >> name;
         body["name"] = name;
 
     }
-    
+    // asks for which room the user wishes to join
+
     string room;
     std::cout << "Enter the room you wish to join: ";
     cin >> room;
@@ -137,7 +138,7 @@ int ThreadedClient::start_chat() {
 
 }
 
-ThreadedClient::ThreadedClient() { input_waiting = 0; }
+ThreadedClient::ThreadedClient() { client_verified = 0; }
 
 int ThreadedClient::_listen_thread(SOCKET server) {
     _connected = 1;
@@ -153,36 +154,46 @@ int ThreadedClient::_listen_thread(SOCKET server) {
         // handling normal messages and leave and join messages are very straightforward
 
         switch (recieved.get_type()) {
+
+            // client setup is sent when a user is successfully accepted and added to a room
+
         case CLIENT_SETUP:
-            std::cout << "\nWELCOME    :    " << recieved.get_body_json()["username"] << "\n\n";
+            std::cout << "\nWELCOME    :    " << recieved.get_body_json()["username"].get<std::string>() << "\n\n";
             joined_room = recieved.get_body_json()["room"];
             std::cout << "CHATROOM: " << joined_room << "\n" << endl;
+
+            // creates a token if not already there
 
             if (recieved.get_body_json().contains("tok")) {
                 auth.set_token(recieved.get_body_json()["tok"].get<std::string>(), connected_ip);
             }
+            client_verified = 1;
             break;
-
+            
+            //CLIENT_INVALID_USERNAME is recieved when a username which was already in use was sent to the server
+            //This can onl be recieved before client_setup, so we do not need any input operations
+            //The write thread will be asleep until client setup is recieved so we can safely use cin to get another userna,e
         case CLIENT_INVALID_USERNAME: {
-            input_waiting = 1;
-            std::cout << "That username already exists, please select another one:";
+            std::cout << "That username already exists, please select another one:\n";
             std::string name;
             std::cin >> name;
             nlohmann::json body;
             body["name"] = name;
-            body["room"] = joined_room;
+            body["room"] = recieved.get_body_str(); // just chaining the room name sent previously, avoiding the need for another input
 
             Message msg = Message(CLIENT_JOIN);
             msg.set_body_json(body);
             msg.send_message(_connect_socket);
-            input_waiting = 0;
 
             break;
         }
+            // This message can only be recieved if the token has been tampered with, client will disconnect.
+
         case CLIENT_INVALID_TOKEN:
             Logger::get().log(LogLevel::ERR, LogModule::AUTH, "Authentication Token Corrupted");
             _connected = 0;
 
+          
         case CLIENT_TEXT_MESSAGE:
         case SERVER_MESSAGE:
             std::cout 
@@ -191,6 +202,8 @@ int ThreadedClient::_listen_thread(SOCKET server) {
                 << recieved.get_body_str()
                 << '\n';
             break;
+
+            // client leaving will be notified with this message
         case CLIENT_LEAVE:
             std::cout << recieved.get_body_str() << " has left the chat." << '\n';
             break;
@@ -218,6 +231,7 @@ int ThreadedClient::_listen_thread(SOCKET server) {
             break;
         case DISCONNECT:
             // other than errors, the socket can only close connections in this way.
+            // it is a warning saying that the server will be closing the socket after this message.
             _connected = 0;
             Logger::get().log(LogLevel::INFO, LogModule::CLIENT, "Connection Closed due to: ", recieved.get_body_str());
 
@@ -249,11 +263,15 @@ int ThreadedClient::_write_thread(SOCKET server) {
         the message will be output, and then the input line wiill be restored
     */
 
+    while (!client_verified) {
+        this_thread::sleep_for(chrono::milliseconds(2000)); // the write thread is asleep till client setup is recieved.
+    }
+
     std::cout << "> ";
     while (1) {
-        ch = _getch();
+        
 
-        if (input_waiting) continue;
+        ch = _getch();
         
         // handling backspace key.
         if (ch == '\b') {
@@ -269,7 +287,7 @@ int ThreadedClient::_write_thread(SOCKET server) {
         if (ch == '\r') {
             if (!input.length()) continue;
 
-            if (input[0] == '/') {
+            if (input[0] == '/') { // handling commands
                 Message cmd = Message(CLIENT_COMMAND);
                 input.erase(input.begin());
                 stringstream arguments(input);
