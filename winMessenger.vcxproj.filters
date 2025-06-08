@@ -81,5 +81,7 @@
     <None Include="serverconfig.ini" />
     <None Include="users.txt" />
     <None Include="clientconfig.json" />
+    <None Include="README.md" />
+    <None Include=".gitignore" />
   </ItemGroup>
 </Project>

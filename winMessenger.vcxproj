@@ -158,7 +158,9 @@
     <Text Include="serverselect.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".gitignore" />
     <None Include="clientconfig.json" />
+    <None Include="README.md" />
     <None Include="serverconfig.ini" />
     <None Include="users.txt" />
   </ItemGroup>
