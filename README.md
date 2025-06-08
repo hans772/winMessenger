@@ -39,11 +39,12 @@ Create an event based server, the server creates a fixed number of threads on st
 asynchronously in a non blocking manner. the worker threads will recieve a context to handle what to do after each operation. This is
 more efficient for larger servers.<br><br>
 
+Choose the port you want the server to be hosted on and the maximum clients you want to allow to connect.
 Voila! you have a server.<br>
 
 ### Creating a client
 
-To start a client (used to send messages to and recieve messages from a server) enter 0, and then the IP and PORT the server is hosted on.<br>
+To start a client (used to send messages to and recieve messages from a server) enter the IP and PORT the server is hosted on.<br>
 Choose which chatroom you wish to join and your desired name (Only first time you connect, connecting to the same server after that will only require your room)<br>
 
 A client can only text people in the same Chatroom as them<br>
@@ -65,8 +66,6 @@ Select that option, an entry will be created to input your custom value;
 
 Since the server is being hosted on a local machine, port forwarding must be enabled for the server to be visible to devices outside the LAN.<br>
 However any device inside the LAN will be able to connect to your device using the device specific IP address assigned to the device by the LAN.<br>
-
-I've added a compiled binary for easier usage.
 
 ## Credits
 
