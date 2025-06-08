@@ -140,6 +140,14 @@ void ServerClient::handle_command(nlohmann::json cmd_jsn) {
             Message info = Message(CLIENT_LEAVE_ROOM);
             nlohmann::json data;
             data["client"] = client_name;
+            if (args.size() <= 1) {
+                Message errmsg = Message(SERVER_MESSAGE); // tells user to provide more arguments
+                errmsg.set_sender("Server");
+                errmsg.set_body_string("Please provide the name of the subroom you wish to join.");
+
+                errmsg.send_message(client_socket);
+                return;
+            }
             data["room_name"] = args[1];
             info.set_body_json(data);
             info.set_sender("Server");

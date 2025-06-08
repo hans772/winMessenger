@@ -160,6 +160,7 @@
   <ItemGroup>
     <None Include=".gitignore" />
     <None Include="clientconfig.json" />
+    <None Include="log.json" />
     <None Include="README.md" />
     <None Include="serverconfig.ini" />
     <None Include="users.txt" />

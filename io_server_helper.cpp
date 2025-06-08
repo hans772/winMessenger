@@ -350,6 +350,22 @@ void IOServerHelper::handle_command(nlohmann::json cmd_jsn, IOCP_CLIENT_CONTEXT 
             Message info = Message(CLIENT_LEAVE_ROOM); // adds the client to the room name subroom
             nlohmann::json data;
             data["client"] = context->name;
+
+            if (args.size() <= 1) {
+                Message errmsg = Message(SERVER_MESSAGE); // tells user to provide more arguments
+                errmsg.set_sender("Server");
+                errmsg.set_body_string("Please provide the name of the subroom you wish to join.");
+
+                IOCP_CLIENT_CONTEXT* wctx = IOServerHelper::create_new_context(
+                    IOCP_CLIENT_CONTEXT::WRITE,
+                    IOCP_CLIENT_CONTEXT::HEAD,
+                    context->client,
+                    new Message(errmsg)
+                );
+                IOServerHelper::set_context_for_message(wctx);
+                WSASend(context->client, &wctx->buffer, 1, nullptr, 0, &wctx->overlapped, nullptr);
+                return;
+            }
             data["room_name"] = args[1];
             info.set_body_json(data);
             info.set_sender("Server");
@@ -392,5 +408,5 @@ void IOServerHelper::handle_command(nlohmann::json cmd_jsn, IOCP_CLIENT_CONTEXT 
 
             WSASend(context->client, &wctx->buffer, 1, nullptr, 0, &wctx->overlapped, nullptr);
         }
-    }
+    } 
 }
