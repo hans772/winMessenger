@@ -368,3 +368,7 @@ winMessengerSetup/
 winMessenger.sln
 winMessenger.vcxproj
 winMessenger.vcxproj.filters
+/log.json
+/clientconfig.json
+/serverconfig.ini
+/users.txt
