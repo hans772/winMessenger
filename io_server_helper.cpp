@@ -165,11 +165,11 @@ void IOServerHelper::handle_write(IOCP_CLIENT_CONTEXT* context) {
 
 void IOServerHelper::handle_message(IOCP_CLIENT_CONTEXT * context) {
 
-    std::lock_guard<std::mutex> lock(*server_mutex);
+    
 
     switch (context->transfer_message->get_type()) {
     case (int)MessageType::CLIENT_JOIN: { // a client sends this message when it attempts to join
-
+        std::lock_guard<std::mutex> lock(*server_mutex);
         nlohmann::json msg_jsn = context->transfer_message->get_body_json();
         if (msg_jsn.contains("tok")) {
             if (auth->verify_token(msg_jsn["tok"].get<std::string>())) {
@@ -273,7 +273,7 @@ void IOServerHelper::handle_message(IOCP_CLIENT_CONTEXT * context) {
         context->transfer_message->set_sender(context->name);
 
         // on recieving a text message from client, message is broadcasted to every other client.
-        std::cout << context->transfer_message->get_sender() << ": " << context->transfer_message->get_body_str() << '\n';
+        Logger::get().log(LogLevel::INFO, LogModule::SERVER,context->transfer_message->get_sender(), ": ", context->transfer_message->get_body_str());
 
         broadcast(context, *(context->transfer_message));
         break;

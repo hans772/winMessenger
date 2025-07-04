@@ -1,22 +1,3 @@
-# CRUx R3 Submission
-
-My R3 consisted of 2 tasks
-
-## Task 1 (Improve Chat App) (Current Repo)
-
-- Improved on my existing chat application and rewrote it's framework to support Event Based message transfers
-- Added logging to 2 write targets, stdout and JSON
-- Implemented JWT based username authentication.
-
-## Task 2 (Dungeon Game Dev)
-
-- Created a 2D, top-down dungeon crawler game.
-- Implemented traps and powerups
-- Implemented an FOV system.
-
-Repo Link: <a href = "https://github.com/hans772/KnightOfTheDungeon?tab=readme-ov-file#dungeoncrawler"> Dungeon Crawler </a>
-
-
 # winMessenger
 
 This is a very bare bones messaging app I made, It uses raw sockets to send and recieve messages through a server to other clients
