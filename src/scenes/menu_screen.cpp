@@ -4,6 +4,7 @@
 
 #include "scenes/scenes.hpp"
 #include "scenes/scene_manager.hpp"
+#include "util/config.hpp"
 
 Window::Window(const char* name, ImGuiWindowFlags flags = 0) {
     ImGui::Begin(name, NULL, flags);
@@ -23,25 +24,26 @@ Window::~Window() {
     ImGui::End();
 }
 
-MenuScreen::MenuScreen(): startup((int)STARTUP_ITEM::SERVER), port(5555), server_max_clients(2), client_ip("localhost"), start_button_lbl("Unknown") {}
+MenuScreen::MenuScreen(): startup_selected(STARTUP_ITEM::SERVER), port(5555), server_max_clients(2), client_ip("localhost"), start_button_lbl("Unknown") {}
 
 void MenuScreen::start_app() {
-    if (startup == (int)STARTUP_ITEM::SERVER) {
-
-    }
+    auto& sm = SceneManager::get();
+    sm.should_quit = true;
+    sm.startup_selection = (STARTUP_ITEM)startup_selected;
+    sm.selected_port = port;
+    sm.selected_ip = client_ip;
 }
 
 void MenuScreen::on_update() {
-    ImGui::NewFrame();
 
     {
         Window select_startup("Select Startup Item", ImVec4(0.f, 0.f, 800.f, 100.f), ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
 
-        ImGui::RadioButton("Server", &startup, (int)STARTUP_ITEM::SERVER);
-        ImGui::RadioButton("Client", &startup, (int)STARTUP_ITEM::CLIENT);
+        ImGui::RadioButton("Server", (int*) & startup_selected, (int)STARTUP_ITEM::SERVER);
+        ImGui::RadioButton("Client", (int*) & startup_selected, (int)STARTUP_ITEM::CLIENT);
     };
 
-    if (startup == (int)STARTUP_ITEM::SERVER) {
+    if (startup_selected == STARTUP_ITEM::SERVER) {
         int inputs_offset_x = 200.f;
         start_button_lbl = "Start Server!";
         Window server_opt("Server Options", ImVec4(0.f, 105.f, 800.f, 100.f), ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
@@ -68,12 +70,11 @@ void MenuScreen::on_update() {
 
     {
         Window server_opt("_", ImVec4(0.f, 210.f, 800.f, 50.f), ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
-        ImGui::Button(start_button_lbl.c_str(), ImVec2(800.f, 40.f));
+        if (ImGui::Button(start_button_lbl.c_str(), ImVec2(800.f, 40.f))) {
+            start_app();
+        };
         ImGui::SetItemTooltip(start_button_lbl.c_str());
-    };
-    
-    
-    ImGui::Render();
+    };   
 }
 
 void MenuScreen::on_startup() {}

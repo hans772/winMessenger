@@ -38,7 +38,16 @@ namespace WMNet {
         }
     }
 
-    Client::Client() {}
+    Client::Client() {
+        
+        WSADATA wsaData;
+        int startup_res = WSAStartup(MAKEWORD(2, 2), &wsaData);
+        if (startup_res != 0) {
+            // WSAStartup failed, networking is unavailable
+            return;
+        }
+    }
+
 	int Client::create_tcp_socket(const char* ip, const char* port) {
         struct addrinfo* result = NULL, * ptr = NULL;
         addrinfo hints;
@@ -141,6 +150,10 @@ namespace WMNet {
             };
         }
 
+    }
+
+    bool Client::is_connected() {
+        return connected.load();
     }
 
     void Client::read_loop() {

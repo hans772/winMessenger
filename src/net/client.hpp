@@ -63,6 +63,7 @@ namespace WMNet {
 			write_status.notify_one();
 		}
 	public:
+		bool is_connected();
 		int start_client(const char* ip, const char* port);
 		void stop_client();
 	};

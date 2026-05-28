@@ -4,22 +4,27 @@
 #include <string>
 #include <map>
 #include <algorithm>
+#include <memory>
+
 #include "util/config.hpp"
 #include "net/wmnet.hpp"
 
-struct ChatRoom;
+struct ChatRoom ;
 
 struct ServerClient {
+	bool logged_in;
 	int id;
 	std::string name;
 	std::shared_ptr<WMNet::Connection> connection;
 	std::weak_ptr<ChatRoom> room;
 };
 
-struct ChatRoom {
+struct ChatRoom : public std::enable_shared_from_this<ChatRoom> {
 	std::string name;
 	std::map <int, std::shared_ptr<ServerClient>> clients;
 	std::map <int, std::shared_ptr<ChatRoom>> sub_rooms;
+
+	ChatRoom(std::string name);
 
 	void remove_client(int id);
 	void add_client(std::shared_ptr<ServerClient> client);

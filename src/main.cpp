@@ -14,11 +14,8 @@
 #include "scenes/scene_manager.hpp"
 #include "scenes/scenes.hpp"
 
-#include "net/server.hpp"
-#include "net/client.hpp"
-#include "net/message.hpp"
-#include "net/serialize.hpp"
-#include "net/deserialize.hpp"
+#include "client/client.hpp"
+#include "server/server.hpp"
 
 void GL_init(GLFWwindow* window) {
     glfwMakeContextCurrent(window);
@@ -38,19 +35,49 @@ int main() {
 
     SceneManager::get().push(std::make_unique<MenuScreen>());
 
-    while (!glfwWindowShouldClose(window)) {
+    while (!glfwWindowShouldClose(window) && !SceneManager::get().should_quit) {
         SceneManager::get().top().poll_events();
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
 
         SceneManager::get().top().on_update();
-        
+
         glClear(GL_COLOR_BUFFER_BIT);
+        ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         glfwSwapBuffers(window);
     }
 
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
-
+    glfwDestroyWindow(window);
     glfwTerminate();
+
+    // launch terminal app after GL is fully torn down
+    auto& sm = SceneManager::get();
+    std::string port_str = std::to_string(sm.selected_port);
+
+    if (sm.startup_selection == STARTUP_ITEM::SERVER) {
+        ChatServer server;
+        server.start_server(port_str.c_str());
+
+        std::string cmd;
+        while (std::getline(std::cin, cmd)) {
+            if (cmd == "quit") break;
+        }
+        server.stop_server();
+
+    }
+    else {
+        ChatClient client;
+        client.start_client(sm.selected_ip.c_str(), port_str.c_str());
+        client.input_loop();
+        client.stop_client();
+    }
+
+    return 0;
+
+
 }

@@ -8,6 +8,8 @@
 #include "backends/imgui_impl_opengl3.h"
 #include "misc/cpp/imgui_stdlib.h"
 
+#include "util/config.hpp"
+
 struct Window {
 	Window() = delete;
 	Window(const char* name, ImGuiWindowFlags flags);
@@ -29,15 +31,10 @@ public:
 	virtual ~Scene() = default;
 };
 
-enum class STARTUP_ITEM {
-	SERVER = 0,
-	CLIENT = 1
-};
-
 class MenuScreen : public Scene {
 private:
-	int startup;
-	
+	STARTUP_ITEM startup_selected;
+
 	int server_max_clients;
 	std::string client_ip;
 
@@ -58,28 +55,6 @@ public:
 void poll_events() override; 
 
 	~MenuScreen() override;
-};
-
-class ServerScreen : public Scene {
-private:
-
-
-
-public:
-	ServerScreen();
-
-	void on_pause() override;
-	void on_resume() override;
-	void on_startup() override;
-	void on_exit() override;
-	void on_update() override;
-	void poll_events() override; 
-	
-	~ServerScreen() = default;
-};
-
-class ClientScreen {
-	
 };
 
 #endif

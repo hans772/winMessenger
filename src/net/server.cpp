@@ -2,6 +2,7 @@
 #include "net/message.hpp"
 #include "net/serialize.hpp"
 #include "net/iocp.hpp"
+#include "util/logger.hpp"
 
 #include <WS2tcpip.h>
 #include <thread>
@@ -119,6 +120,7 @@ namespace WMNet {
             }
         }
 
+        Logger::get().log(LogLevel::DEBUG, LogModule::SERVER, "Closed Listen Socket");
         closesocket(listen_socket);
     }
 
@@ -227,13 +229,13 @@ namespace WMNet {
 
     }
 
-    int Server::start_server(const char* port) {
+    int Server::start_server(const char* port, size_t max_connections) {
         if (create_tcp_socket(port)) {
 
             active.store(true);
 
-            m_acceptor_thread = std::thread([this]() {
-                this->accept_connections(100);
+            m_acceptor_thread = std::thread([this, max_connections]() {
+                this->accept_connections(max_connections);
                 });
 
             m_message_thread = std::thread([this]() {

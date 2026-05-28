@@ -91,7 +91,7 @@ namespace WMNet {
 			}
 		};
 	public:
-		int start_server(const char* port);
+		int start_server(const char* port, size_t max_connections);
 		void stop_server();
 	};
 

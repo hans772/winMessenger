@@ -19,7 +19,10 @@ add_executable(winMessenger
     "src/net/connection.cpp" 
     "src/net/iocp.cpp"
     "src/server/server.cpp"
+    "src/client/client.cpp"
+    "src/util/logger.cpp"
 )
+
 target_compile_features(winMessenger PRIVATE cxx_std_20)
 
 target_include_directories(winMessenger PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
@@ -34,6 +37,7 @@ add_library(imgui STATIC
     imgui/backends/imgui_impl_opengl3.cpp
     imgui/backends/imgui_impl_glfw.cpp
 )
+
 target_include_directories(imgui PUBLIC imgui imgui/backends)
 target_link_libraries(imgui PRIVATE glfw OpenGL::GL)
 
@@ -48,4 +52,3 @@ if(WIN32)
 	 target_link_libraries(winMessenger PRIVATE ws2_32)
      target_link_libraries(winMessenger PRIVATE gdi32)
 endif(WIN32)
-
