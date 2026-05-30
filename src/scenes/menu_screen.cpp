@@ -32,6 +32,7 @@ void MenuScreen::start_app() {
     sm.startup_selection = (STARTUP_ITEM)startup_selected;
     sm.selected_port = port;
     sm.selected_ip = client_ip;
+    sm.max_clients = server_max_clients;
 }
 
 void MenuScreen::on_update() {

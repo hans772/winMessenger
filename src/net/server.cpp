@@ -120,7 +120,7 @@ namespace WMNet {
             }
         }
 
-        Logger::get().log(LogLevel::DEBUG, LogModule::SERVER, "Closed Listen Socket");
+        Logger::get().log(LogLevel::INFO, LogModule::SERVER, "Closed Listen Socket");
         closesocket(listen_socket);
     }
 
@@ -245,6 +245,8 @@ namespace WMNet {
             m_event_thread = std::thread([this]() {
                 this->listen_events();
                 });
+
+            Logger::get().log(LogLevel::INFO, LogModule::SERVER, "Server started on port: ", port, ". Max connections allowed: ", max_connections);
 
         }
         else { 

@@ -28,6 +28,13 @@ void GL_init(GLFWwindow* window) {
     ImGui_ImplOpenGL3_Init("#version 130");
 }
 
+void enable_ansi() {
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    DWORD mode;
+    GetConsoleMode(hConsole, &mode);
+    SetConsoleMode(hConsole, mode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
+}
+
 int main() {
     glfwInit();
     GLFWwindow* window = glfwCreateWindow(800, 600, "WinMessenger", NULL, NULL);
@@ -55,13 +62,15 @@ int main() {
     glfwDestroyWindow(window);
     glfwTerminate();
 
+    enable_ansi();
+
     // launch terminal app after GL is fully torn down
     auto& sm = SceneManager::get();
     std::string port_str = std::to_string(sm.selected_port);
 
     if (sm.startup_selection == STARTUP_ITEM::SERVER) {
         ChatServer server;
-        server.start_server(port_str.c_str());
+        server.start_server(port_str.c_str(), sm.max_clients);
 
         std::string cmd;
         while (std::getline(std::cin, cmd)) {

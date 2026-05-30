@@ -3,19 +3,19 @@
 
 #include "net/wmnet.hpp"
 
-struct ClientMessage {
+struct ClientString {
 	int client_id;
 	std::string client_name;
-	std::string message;
+	std::string str;
 };
 
 template<>
-struct WMNet::Serializer<ClientMessage> {
-    static std::vector<WMNet::byte> serialize(const WMNet::Message<ClientMessage>& msg) {
+struct WMNet::Serializer<ClientString> {
+    static std::vector<WMNet::byte> serialize(const WMNet::Message<ClientString>& msg) {
 
         size_t payload_size = sizeof(int)
             + sizeof(uint16_t) + msg.data.client_name.size()
-            + sizeof(uint16_t) + msg.data.message.size();
+            + sizeof(uint16_t) + msg.data.str.size();
 
         std::vector<WMNet::byte> serialized(sizeof(WMNet::NetHeader) + payload_size);
 
@@ -41,19 +41,19 @@ struct WMNet::Serializer<ClientMessage> {
         offset += msg.data.client_name.size();
 
         // message with prefix length
-        uint16_t msg_len = htons(static_cast<uint16_t>(msg.data.message.size()));
+        uint16_t msg_len = htons(static_cast<uint16_t>(msg.data.str.size()));
         std::memcpy(serialized.data() + offset, &msg_len, sizeof(uint16_t));
         offset += sizeof(uint16_t);
-        std::memcpy(serialized.data() + offset, msg.data.message.data(), msg.data.message.size());
+        std::memcpy(serialized.data() + offset, msg.data.str.data(), msg.data.str.size());
 
         return serialized;
     }
 };
 
 template<>
-struct WMNet::DeSerializer<ClientMessage> {
-    static ClientMessage deserialize(const std::vector<WMNet::byte>& data) {
-        ClientMessage result;
+struct WMNet::DeSerializer<ClientString> {
+    static ClientString deserialize(const std::vector<WMNet::byte>& data) {
+        ClientString result;
         size_t offset = 0;
 
         // client_id
@@ -75,7 +75,7 @@ struct WMNet::DeSerializer<ClientMessage> {
         std::memcpy(&msg_len, data.data() + offset, sizeof(uint16_t));
         msg_len = ntohs(msg_len);
         offset += sizeof(uint16_t);
-        result.message = std::string(reinterpret_cast<const char*>(data.data() + offset), msg_len);
+        result.str = std::string(reinterpret_cast<const char*>(data.data() + offset), msg_len);
 
         return result;
     }

@@ -20,6 +20,7 @@ public:
 	STARTUP_ITEM startup_selection;
 	int selected_port;
 	std::string selected_ip;
+	int max_clients;
 
 	void push(std::unique_ptr<Scene> scene);
 	void replace(std::unique_ptr<Scene> scene);

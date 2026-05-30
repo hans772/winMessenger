@@ -123,7 +123,7 @@ namespace WMNet {
             size_t rem = write.size();
             byte* ptr = write.data();
 
-            send_all(client_socket, ptr, rem, 0);
+            if(!send_all(client_socket, ptr, rem, 0)) connected.store(false);
 
         }
     }
@@ -149,7 +149,9 @@ namespace WMNet {
                 }
             };
         }
+        
 
+        on_disconnect();
     }
 
     bool Client::is_connected() {
@@ -164,7 +166,7 @@ namespace WMNet {
             byte* ptr = reinterpret_cast<byte*>(&header);
 
             if (!recv_all(client_socket, ptr, sizeof(NetHeader), 0)) {
-                // handle error
+                connected.store(false);
                 return;
             };
 
@@ -178,7 +180,8 @@ namespace WMNet {
                 ptr = data.data();
 
                 if (!recv_all(client_socket, ptr, header.size, 0)) {
-                    // handle error
+                    connected.store(false);
+
                     return;
                 }
             }

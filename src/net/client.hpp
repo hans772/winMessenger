@@ -53,6 +53,7 @@ namespace WMNet {
 		void register_handler(msg_id_t id, MessageHandler handler);
 
 		virtual void on_connect_to_server() {};
+		virtual void on_disconnect() {};
 
 		template <class T>
 		void send_message(Message<T> message) {

@@ -20,14 +20,27 @@ struct ServerClient {
 };
 
 struct ChatRoom : public std::enable_shared_from_this<ChatRoom> {
+	int id;
 	std::string name;
 	std::map <int, std::shared_ptr<ServerClient>> clients;
 	std::map <int, std::shared_ptr<ChatRoom>> sub_rooms;
 
+	std::weak_ptr<ChatRoom> parent;
+
+
 	ChatRoom(std::string name);
+	ChatRoom(std::string name, int id, std::shared_ptr<ChatRoom> parent);
 
 	void remove_client(int id);
 	void add_client(std::shared_ptr<ServerClient> client);
+
+	std::shared_ptr<ChatRoom> create_subroom(std::string name);
+
+	std::shared_ptr<ChatRoom> find_subroom(int id);
+	std::shared_ptr<ChatRoom> find_subroom(std::string name);
+
+	bool move_client_to_subroom(int id, std::shared_ptr<ServerClient> client);
+	bool move_client_to_parent(std::shared_ptr<ServerClient> client);
 
 	template <typename T>
 	void broadcast(WMNet::Message<T> msg, std::vector<int> ignores) {
@@ -58,6 +71,12 @@ class ChatServer : public WMNet::Server {
 	
 	void client_login(WMNet::ConnectionMessage msg);
 	void client_message(WMNet::ConnectionMessage msg);
+
+	void client_create_subroom(WMNet::ConnectionMessage msg);
+	void client_join_subroom(WMNet::ConnectionMessage msg);
+	void client_parent_subroom(WMNet::ConnectionMessage msg);
+
+
 
 public:
 	ChatServer();
