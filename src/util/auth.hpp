@@ -2,8 +2,8 @@
 
 #include <fstream>
 #include <sstream>
-#include "logger.hpp"
-#include "json.hpp"
+#include "util/logger.hpp"
+#include "util/json.hpp"
 
 class ServerAuth {
 
